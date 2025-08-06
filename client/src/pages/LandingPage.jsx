@@ -5,6 +5,8 @@ import cbLogo from "../assets/codingBlocks.png";
 import bgimg from "../assets/bg.jpg";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import one from "../assets/one.jpg";
+import title from "../assets/title.png";
 
 
 function LandingPage() {
@@ -88,12 +90,10 @@ function LandingPage() {
               : "translate-y-10 opacity-0 scale-95"
           }`}
         >
-          {/* Glow Frame */}
-          <div className="absolute -inset-4 bg-gradient-to-r from-[#FFD700] via-[#FFB800] to-[#FFD700] rounded-3xl opacity-20 blur-sm" />
-          <div className="absolute -inset-2 bg-gradient-to-r from-[#FFD700]/40 to-[#FFB800]/40 rounded-2xl opacity-30" />
-
           {/* Main Box */}
-          <div className="relative bg-gradient-to-br from-[#1b2a49]/70 to-[#13233f]/80 backdrop-blur-xl rounded-2xl border-2 border-[#FFD700]/40 shadow-[0_0_40px_rgba(255,215,0,0.15)] overflow-hidden">
+          <div 
+            className="relative bg-gradient-to-br from-[#1b2a49]/70 to-[#13233f]/80 backdrop-blur-xl rounded-2xl border-2 border-[#FFD700]/40 shadow-[0_0_40px_rgba(255,215,0,0.15)] overflow-hidden"
+            style={{ backgroundImage: `url(${one})`, }}>
             {/* Decorative Corners */}
             <div className="absolute top-4 left-4 w-6 h-6 border-l-2 border-t-2 border-[#FFD700] rounded-tl-lg" />
             <div className="absolute top-4 right-4 w-6 h-6 border-r-2 border-t-2 border-[#FFD700] rounded-tr-lg" />
@@ -103,67 +103,75 @@ function LandingPage() {
             <div className="p-8 sm:p-12 text-center">
               {/* Logos */}
               <div
-                className={`relative mb-8 flex justify-center items-center transition-all duration-1000 delay-600 ${
+                className={`relative mb-1 flex justify-center items-center transition-all duration-1000 delay-600 ${
                   isLoaded
                     ? "scale-100 opacity-100 rotate-0"
                     : "scale-0 opacity-0 rotate-12"
                 }`}
               >
-                <div className="relative flex justify-between w-full">
+                <div className="relative flex justify-between items-center w-full">
                   {/* Glow */}
-                  <div className="absolute inset-0 bg-[#e5ee66] rounded-full blur-xl opacity-30 animate-pulse" />
+                  <div className="absolute inset-0 animate-pulse" />
 
                   {/* Logo 1 */}
-                  <div className="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto rounded-full border border-[#f1e187] bg-gradient-to-br from-[#FFD700]/20 to-[#FF4500]/20 backdrop-blur-sm overflow-hidden">
-                    <img src={kareLogo} alt="KARE" className="w-full h-full object-contain rounded-full" />
-                    <div className="absolute inset-0 border border-dashed border-[#FFD700]/40 rounded-full animate-spin" style={{ animationDuration: "20s" }} />
+                  <div className="relative w-20 h-20 sm:w-20 sm:h-20 mx-auto ">
+                    <img src={kareLogo} alt="KARE" className="w-full h-full object-contain " />
+                    <div className="absolute inset-0" style={{ animationDuration: "20s" }} />
                   </div>
 
                   {/* Logo 2 */}
-                  <div className="relative w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full border border-[#FFD700] bg-gradient-to-br from-[#FFD700]/20 to-[#FF4500]/20 backdrop-blur-sm overflow-hidden">
-                    <img src={logo} alt="Logo" className="w-full h-full object-contain rounded-full" />
-                    <div className="absolute inset-0 border border-dashed border-[#FFD700]/40 rounded-full animate-spin" style={{ animationDuration: "20s" }} />
+                  <div className="relative w-22 h-22 sm:w-22 sm:h-22 mx-auto ">
+                    <img src={logo} alt="Logo" className="w-full h-full object-contain" />
+                    <div className="absolute inset-0" style={{ animationDuration: "20s" }} />
                   </div>
 
                   {/* Logo 3 */}
-                  <div className="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto rounded-full border border-[#FFD700] bg-black backdrop-blur-sm overflow-hidden">
+                  <div className="relative w-20 h-20 sm:w-20 sm:h-20 mx-auto rounded-full bg-black ">
                     <img src={cbLogo} alt="CB" className="w-full h-full object-contain rounded-full" />
-                    <div className="absolute inset-0 border border-dashed border-[#FFD700]/40 rounded-full animate-spin" style={{ animationDuration: "20s" }} />
+                    <div className="absolute inset-0" style={{ animationDuration: "20s" }} />
                   </div>
                 </div>
               </div>
 
               {/* Title */}
               <div className={`mb-6 transition-all duration-1000 delay-800 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
-                <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] via-[#FFB800] to-[#FF4500] mb-2 tracking-wide">
-                  SAIL TO INNOVATION
-                </h1>
+                <div className="flex items-center justify-center">
+                  <img className="w-1/2" src={title} alt="title_img" />
+                </div>                  
                 <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent mx-auto mb-4" />
-                <p className="text-[#FFD700] text-lg sm:text-xl font-medium">⚔️ Grand Line Hackathon 2025 ⚔️</p>
+                <p className="text-[#362F1C] text-2xl sm:text-3xl font-medium">⚔️ Grand Line Hackathon 2025 ⚔️</p>
               </div>
 
               {/* Description */}
               <div className={`mb-8 transition-all duration-1000 delay-1000 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
-                <p className="text-white/90 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto">
+                <p className="font-[poppins] font-semibold text-[#362F1C] text-lg sm:text-2xl leading-relaxed max-w-2xl mx-auto">
                   Embark on an epic coding adventure across the digital seas!
                   <br />
-                  <span className="text-[#FFD700] font-semibold">Join crews, conquer challenges, and claim your treasure!</span>
+                  <span className="text-[#362F1C] font-semibold">Join crews, conquer challenges, and claim your treasure!</span>
                 </p>
               </div>
 
               {/* Stats */}
-              <div className={`grid grid-cols-3 gap-4 mb-8 transition-all duration-1000 delay-1200 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
-                {[
-                  { value: "24h", label: "Adventure Time" },
-                  { value: "₹15k+", label: "Treasure Pool" },
-                  { value: "50+", label: "Pirates" },
-                ].map((stat, i) => (
-                  <div key={i} className="bg-[#0d1628]/60 backdrop-blur-sm rounded-lg p-4 border border-[#FFD700]/30 shadow-lg w-full">
-                    <div className="text-2xl font-bold text-[#FFD700]">{stat.value}</div>
-                    <div className="text-white/70 text-sm">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
+              <div
+                className={`flex flex-wrap justify-center gap-4 mb-8 font-[poppins] transition-all duration-1000 delay-1200 ${
+                isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+              }`}
+              >
+  {[
+    { value: "24h", label: "Adventure Time" },
+    { value: "₹15k+", label: "Treasure Pool" },
+    { value: "50+", label: "Pirates" },
+  ].map((stat, i) => (
+    <div
+      key={i}
+      className="bg-[#0d1628]/60 backdrop-blur-sm rounded-md p-4 border border-[#FFD700]/30 shadow-md w-[140px] text-center"
+    >
+      <div className="text-2xl font-bold text-[#FFD700]">{stat.value}</div>
+      <div className="text-white/60 text-sm">{stat.label}</div>
+    </div>
+  ))}
+</div>
+
 
               {/* Button */}
                 <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-1000 delay-1400 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
@@ -198,24 +206,6 @@ function LandingPage() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Bottom Wave */}
-        <div className="absolute bottom-0 left-0 right-0 h-20 overflow-hidden">
-          <div className="absolute bottom-0 left-0 w-full h-4 bg-gradient-to-r from-blue-600/30 via-blue-500/30 to-blue-600/30 animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-full">
-            {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute bottom-0 w-4 h-4 bg-blue-400/20 rounded-full animate-bounce"
-                style={{
-                  left: `${20 + i * 15}%`,
-                  animationDelay: `${i * 0.2}s`,
-                  animationDuration: "2s",
-                }}
-              />
-            ))}
           </div>
         </div>
       </div>
