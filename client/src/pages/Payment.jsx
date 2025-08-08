@@ -10,6 +10,7 @@ function Payment() {
   const { registrationData } = location.state || {};
   const [isUploading, setIsUploading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [preview, setPreview] = useState(null);
 
   const totalAmount = registrationData ? registrationData.members.length * 350 : 0;
 
@@ -31,6 +32,7 @@ function Payment() {
 
   const handleImageUpload = (file) => {
     if (file) {
+      setPreview(URL.createObjectURL(file)); // Show preview
       setIsUploading(true);
       setTimeout(() => {
         setIsUploading(false);
@@ -62,7 +64,11 @@ function Payment() {
         >
           <div
             className="rounded-2xl border border-yellow-500/30 shadow-xl p-6 sm:p-10 relative overflow-hidden"
-            style={{ backgroundImage: `url(${one})`, backgroundSize: "cover", backgroundPosition: "center" }}
+            style={{
+              backgroundImage: `url(${one})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
           >
             {/* Decorative Corners */}
             <div className="absolute top-4 left-4 w-6 h-6 border-l-2 border-t-2 border-[#362F1C] rounded-tl-lg" />
@@ -81,7 +87,9 @@ function Payment() {
                 </p>
 
                 <div className="text-[#362F1C] font-[poppins] border p-4 rounded-md text-sm mb-4">
-                  <p><strong>Team Name:</strong> {registrationData.teamName}</p>
+                  <p>
+                    <strong>Team Name:</strong> {registrationData.teamName}
+                  </p>
                   {registrationData.members.map((member, index) => (
                     <p key={index}>
                       <strong>Member {index + 1}:</strong> {member.name || `Member ${index + 1}`} x 350
@@ -95,17 +103,27 @@ function Payment() {
                   Provide your UPI ID and Transaction Number for our reference.
                 </p>
 
-                <div className="mb-4 font-[poppins] text-center">
-                  <p className="mb-2 font-semibold">Scan Here To Pay:</p>
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/8/89/UPI-QR-Code-Example.svg"
-                    alt="QR Code"
-                    className="w-40 mx-auto"
-                  />
-                  <p className="mt-2 text-xs text-red-600 font-semibold">Use Only Gpay</p>
-                  <button className="mt-2 text-sm underline">Download QR</button>
-                </div>
+                {/* QR Section */}
+                <div className="font-[poppins] text-center max-w-sm mx-auto p-4 rounded-2xl shadow-lg bg-gradient-to-b from-yellow-50 to-orange-100 border-2 border-yellow-400">
+                  <p className="mb-3 text-lg font-bold text-yellow-900">🏴‍☠️ Scan Here To Pay</p>
 
+                  <div className="p-3 rounded-xl bg-white shadow-inner border-4 border-yellow-500 hover:scale-105 transition-transform duration-300">
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/8/89/UPI-QR-Code-Example.svg"
+                      alt="QR Code"
+                      className="w-44 mx-auto rounded-lg"
+                    />
+                  </div>
+
+                  <p className="mt-3 text-sm text-red-600 font-semibold">⚠ Use Only GPay</p>
+
+                  <button className="mt-3 px-4 py-2 text-sm font-semibold text-white bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg transition-all duration-300">
+                    📥 Download QR
+                  </button>
+                </div>
+                <br/>
+
+                {/* Payment Form */}
                 <form className="font-[poppins] space-y-6">
                   <div>
                     <label className="block text-sm font-medium">
@@ -131,6 +149,7 @@ function Payment() {
                     />
                   </div>
 
+                  {/* File Upload with Preview */}
                   <div className="pt-4">
                     <label className="block text-sm font-semibold text-[#362F1C] mb-1">
                       TRANSACTION SCREENSHOT: <span className="text-red-600">*</span>
@@ -147,6 +166,17 @@ function Payment() {
                         onChange={(e) => handleImageUpload(e.target.files[0])}
                         className="w-full px-0 py-2 border-0 border-b border-[#362F1C] bg-transparent focus:outline-none file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-yellow-500/20 file:text-[#362F1C] hover:file:bg-yellow-500/30"
                       />
+                    )}
+
+                    {preview && (
+                      <div className="mt-4 text-center">
+                        <p className="text-sm text-gray-600 mb-2">Preview:</p>
+                        <img
+                          src={preview}
+                          alt="Transaction Preview"
+                          className="w-48 mx-auto rounded-lg shadow-md border border-yellow-400"
+                        />
+                      </div>
                     )}
                   </div>
 

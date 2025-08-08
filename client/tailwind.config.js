@@ -5,6 +5,7 @@ module.exports = {
       fontFamily: {
         mycustom: ['var(--font-mycustom)'],
         poppins: ['var(--font-poppins)'],
+        pirates: ['var(--font-pirates)'],
       },
     },
   },
