@@ -24,6 +24,7 @@ function Registration() {
     { name: "", email: "", role: "", image: null },
     { name: "", email: "", role: "", image: null },
     { name: "", email: "", role: "", image: null },
+    { name: "", email: "", role: "", image: null }, // Added 5th member
   ]);
   const [isUploading, setIsUploading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -82,7 +83,7 @@ function Registration() {
   };
 
   const handleNext = () => {
-    if (step < 4) {
+    if (step < 5) { // Changed from 4 to 5
       setStep(step + 1);
     } else {
       const registrationData = {
@@ -288,7 +289,7 @@ function Registration() {
                   <span className="relative z-10">
                     {step === 0
                       ? "Member 1"
-                      : step < 4
+                      : step < 5 // Changed from 4 to 5
                       ? `Member ${step + 1}`
                       : "Submit Crew"}
                   </span>

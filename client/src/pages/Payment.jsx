@@ -162,10 +162,10 @@ function Payment() {
               <div className="text-center py-8">
                 <p className="text-red-500">No registration data found.</p>
                 <button
-                  onClick={() => navigate("/registration")}
+                  onClick={() => navigate("/")}
                   className="mt-4 px-4 py-2 bg-black text-white rounded-md"
                 >
-                  Go to Registration
+                  Go to Home
                 </button>
               </div>
             )}
