@@ -3,8 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import bgImg from "../assets/bg.jpg";
 import one from "../assets/one.jpg";
 import { io } from "socket.io-client";
+import axios from "axios";
 
-const socket=io("http://localhost:3001")
+const socket=io("https://cb-kare-server.onrender.com")
 function Payment() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -12,6 +13,8 @@ function Payment() {
   const wid = useRef();
   const [imgUrl, setImgUrl] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
+  const [tran,settran]=useState("")
+  const [upiid,setupiid]=useState("")
   const [done,setDone]=useState(false);
 
   
@@ -32,13 +35,7 @@ function Payment() {
         }
       };
     });
-    if (done){
-    return (
-      <div>
-        Sorry registration are completed the slots are filled 😓 we hope you will understand 🥺 thanks a lot for your intrest we will get back to you with an update.If your payment was done Please contact this number <b className=" text-red-400">6281605767</b>
-      </div>
-    )
-  }
+   
     let myWidget = cloudinary.createUploadWidget(
           {
             cloudName: "dfseckyjx",
@@ -58,12 +55,27 @@ function Payment() {
 
         socket.emit("check")
         socket.on("see",(res)=>{
-          if (res=="omk"){
+          console.log(res)
+          if (res=="yes"){
             setDone(true)
           }
         })
   }, []);
 
+    if (done){
+    return (
+      <div>
+        Sorry registration are completed the slots are filled 😓 we hope you will understand 🥺 thanks a lot for your intrest we will get back to you with an update.If your payment was done Please contact this number <b className=" text-red-400">6281605767</b>
+      </div>
+    )
+  }
+
+   function handlesubmit(){
+    const teamdata=JSON.parse(localStorage.getItem("teamRegistrations"))
+    const data={...teamdata,transactionId:tran,imgUrl:imgUrl,upiId:upiid}
+    axios.post("https://cb-kare-server.onrender.com/event/gen/register",data).then((res)=>{console.log(res)})
+
+    }
   
   return (
     <div className="min-h-screen w-full relative overflow-hidden">
@@ -161,6 +173,8 @@ function Payment() {
                     <input
                       type="text"
                       required
+                                            onChange={(e)=>{setupiid(e.target.value)}}
+                        value={upiid}
                       placeholder="Enter your UPI ID"
                       className="w-full mt-1 px-2 py-1 border-b border-black bg-transparent focus:outline-none"
                     />
@@ -173,6 +187,8 @@ function Payment() {
                     <input
                       type="text"
                       required
+                      value={tran}
+                      onChange={(e)=>{settran(e.target.value)}}
                       placeholder="Enter transaction number"
                       className="w-full mt-1 px-2 py-1 border-b border-black bg-transparent focus:outline-none"
                     />
@@ -183,11 +199,13 @@ function Payment() {
                     <label className="block text-sm font-semibold text-[#362F1C] mb-1">
                       TRANSACTION SCREENSHOT: <span className="text-red-600">*</span>
                     </label>
+                    <div className=" w-full flex justify-center">
                     {imgUrl ? (
-                      <button className=" p-3  rounded-xl shadow font-semibold bg-yellow-500 text-white" onClick={() => wid.current.open()}>Re-Upload</button>
+                      <button className=" p-3.5  rounded-xl shadow font-semibold bg-yellow-500 text-white font-sans" onClick={() => wid.current.open()}>Re-Upload</button>
                     ) : (
-                      <button className=" p-3  rounded-xl shadow font-semibold bg-yellow-500 text-white" onClick={() => wid.current.open()}>Upload</button>
+                      <button className=" p-3.5  rounded-xl shadow font-semibold bg-yellow-500 text-white font-sans" onClick={() => wid.current.open()}>Upload</button>
                     )}
+                    </div>
                     {imgUrl && (
                       <div className="mt-4 text-center">
                         <p className="text-sm text-gray-600 mb-2">Preview:</p>
@@ -201,9 +219,8 @@ function Payment() {
                   </div>
 
                   <button
-                    type="submit"
                     className="w-full mt-8 py-3 bg-gradient-to-r from-red-700 to-red-900 text-white text-lg rounded-lg border-2 border-yellow-500 shadow-lg hover:shadow-yellow-500/30 transition-all duration-300 hover:scale-105 hover:from-red-800 hover:to-red-950 disabled:opacity-50"
-                  // onClick={}
+                  onClick={handlesubmit}
                   >
                     Submit Payment
                   </button>

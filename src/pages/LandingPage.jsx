@@ -1,3 +1,11 @@
+  // Format countdown as HH:MM:SS
+  const formatCountdown = (ms) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  };
 import React from "react";
 import logo from '../assets/logo.png';
 import { useState, useEffect } from "react";
@@ -10,15 +18,38 @@ import oda from "../assets/oda.png";
 import { Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-function LandingPage() {
 
+function LandingPage() {
   const [isLoading, setIsLoading] = useState(true);
+
+  // Registration logic
+  const [showRegister, setShowRegister] = useState(false);
+  const [countdown, setCountdown] = useState(0);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    // Set target time to today at 6 PM
+    const now = new Date();
+    const target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 0, 0, 0);
+    const updateCountdown = () => {
+      const diff = target - new Date();
+      if (diff > 0) {
+        setCountdown(diff);
+        setShowRegister(false);
+      } else {
+        setCountdown(0);
+        setShowRegister(true);
+      }
+    };
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   // Animation variants
@@ -293,63 +324,42 @@ function LandingPage() {
                     ))}
                   </motion.div>
 
-                  {/* Register Button */}
+                  {/* Register Button or Countdown Timer */}
                   <motion.div 
                     className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6"
                     variants={itemVariants}
                   >
-                    <Link to="/register">
-                      <motion.button 
-                        className="group relative px-10 py-5 bg-gradient-to-r from-[#b71c1c] to-[#d32f2f] text-white font-bold text-xl sm:text-2xl rounded-full border-2 border-[#FFD700] shadow-lg"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ 
-                          delay: 2.2, 
-                          duration: 0.8,
-                          type: "spring",
-                          bounce: 0.5
-                        }}
-                        whileHover={{ 
-                          scale: 1.1,
-                          boxShadow: "0 0 30px rgba(255,215,0,0.5)"
-                        }}
-                        whileTap={{ scale: 0.95 }}
-                        variants={bounceVariants}
-                      >
-                        <span className="z-10 flex justify-center items-center gap-3 w-full cursor-pointer">
-                          REGISTER NOW
-                        </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#FFD700]/20 to-[#FF4500]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </motion.button>
-                    </Link>
-                  </motion.div>
-
-                  {/* Timer */}
-                  <motion.div
-                    variants={itemVariants}
-                  >
-                    <motion.div 
-                      className="text-[#362F1C] text-xl sm:text-2xl mb-2"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 2.4, duration: 0.8 }}
-                    >
-                      Registration Ends In:
-                    </motion.div>
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }} 
-                      transition={{ delay: 2.4, duration: 0.8 }}
-                      className="flex justify-center gap-2 text-[#FFFFFF] font-mono text-lg sm:text-xl"
-                    >
-                      <span className="bg-black/30 px-2 sm:px-3 py-1 rounded text-sm sm:text-xl">15</span>
-                      <span>:</span>
-                      <span className="bg-black/30 px-2 sm:px-3 py-1 rounded text-sm sm:text-xl">23</span>
-                      <span>:</span>
-                      <span className="bg-black/30 px-2 sm:px-3 py-1 rounded text-sm sm:text-xl">45</span>
-                      <span>:</span>
-                      <span className="bg-black/30 px-2 sm:px-3 py-1 rounded text-sm sm:text-xl">12</span>
-                    </motion.div>
+                    {showRegister ? (
+                      <Link to="/register">
+                        <motion.button 
+                          className="group relative px-10 py-5 bg-gradient-to-r from-[#b71c1c] to-[#d32f2f] text-white font-bold text-xl sm:text-2xl rounded-full border-2 border-[#FFD700] shadow-lg"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ 
+                            delay: 2.2, 
+                            duration: 0.8,
+                            type: "spring",
+                            bounce: 0.5
+                          }}
+                          whileHover={{ 
+                            scale: 1.1,
+                            boxShadow: "0 0 30px rgba(255,215,0,0.5)"
+                          }}
+                          whileTap={{ scale: 0.95 }}
+                          variants={bounceVariants}
+                        >
+                          <span className="z-10 flex justify-center items-center gap-3 w-full cursor-pointer">
+                            REGISTER NOW
+                          </span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-[#FFD700]/20 to-[#FF4500]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </motion.button>
+                      </Link>
+                    ) : (
+                      <div className="flex flex-col items-center">
+                        <span className="text-2xl sm:text-3xl font-serif  text-white mb-2">Registration opens at 6:00 PM</span>
+                        <span className="text-2xl font-serif  sm:text-2xl text-white bg-[#0d1628]/60 px-6 py-2 rounded-full border border-[#FFD700]/30 shadow-md">Countdown: {formatCountdown(countdown)}</span>
+                      </div>
+                    )}
                   </motion.div>
                 </div>
                 
