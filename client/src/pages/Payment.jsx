@@ -105,7 +105,7 @@ function Payment() {
 
                 {/* QR Section */}
                 <div className="font-[poppins] text-center max-w-sm mx-auto p-4 rounded-2xl shadow-lg bg-gradient-to-b from-yellow-50 to-orange-100 border-2 border-yellow-400">
-                  <p className="mb-3 text-lg font-bold text-yellow-900">🏴‍☠️ Scan Here To Pay</p>
+                  <p className="mb-3 text-lg font-bold text-yellow-900"> Scan Here To Pay</p>
 
                   <div className="p-3 rounded-xl bg-white shadow-inner border-4 border-yellow-500 hover:scale-105 transition-transform duration-300">
                     <img

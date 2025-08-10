@@ -1,97 +1,192 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 import bgImg from "../assets/bg.jpg";
 import one from "../assets/one.jpg";
-import loadingImg1 from "../assets/loading.gif";
-import loadingImg2 from "../assets/load2.gif";
-import loadingImg3 from "../assets/load3.gif";
-import loadingImg4 from "../assets/load4.gif";
-import loadingImg5 from "../assets/load5.gif";
-import loadingImg6 from "../assets/load6.jpg";
-import loadingImg7 from "../assets/load7.gif";
-import loadingImg8 from "../assets/load8.gif";
-import loadingImg9 from "../assets/load9.gif";
-import loadingImg10 from "../assets/load10.gif";
-import loadingImg11 from "../assets/load11.gif";
 
 function Registration() {
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
   const [step, setStep] = useState(0);
   const [teamName, setTeamName] = useState("");
   const [members, setMembers] = useState([
-    { name: "", email: "", role: "", image: null },
-    { name: "", email: "", role: "", image: null },
-    { name: "", email: "", role: "", image: null },
-    { name: "", email: "", role: "", image: null },
-    { name: "", email: "", role: "", image: null }, // Added 5th member
+    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
+    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
+    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
+    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
+    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
   ]);
   const [isUploading, setIsUploading] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [hideLoader, setHideLoader] = useState(false);
-  const [randomLoaderImage, setRandomLoaderImage] = useState("");
-  const [hoveredInput, setHoveredInput] = useState("");
-  const [focusedInput, setFocusedInput] = useState("");
   const [buttonHovered, setButtonHovered] = useState(false);
 
-  useEffect(() => {
-    const loaderImages = [
-      loadingImg1,
-      loadingImg2,
-      loadingImg3,
-      loadingImg4,
-      loadingImg5,
-      loadingImg6,
-      loadingImg7,
-      loadingImg8,
-      loadingImg9,
-      loadingImg10,
-      loadingImg11
-    ];
-
-    const randomIndex = Math.floor(Math.random() * loaderImages.length);
-    setRandomLoaderImage(loaderImages[randomIndex]);
-
-    const images = [bgImg, one];
-    
-    let loadedCount = 0;
-    images.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount === images.length) {
-          setIsLoaded(true);
-          setTimeout(() => setHideLoader(true), 500);
-        }
-      };
-    });
-  }, []);
+  const hostelOptions = [
+    "MH1", "MH2", "MH3", "MH4", "MH5", "MH6", "MH7",
+    "LH1", "LH2", "LH3", "LH4"
+  ];
 
   const handleMemberChange = (field, value) => {
     const updatedMembers = [...members];
     updatedMembers[step - 1][field] = value;
+    
+    // Reset hostel name when accommodation type changes
+    if (field === "accommodationType" && value === "dayscholar") {
+      updatedMembers[step - 1].hostelName = "";
+    }
+    
     setMembers(updatedMembers);
   };
 
   const handleImageUpload = (file) => {
     if (file) {
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("File size should be less than 5MB", {
+          duration: 4000,
+          position: 'top-center',
+          style: {
+            background: '#dc2626',
+            color: 'white',
+            fontWeight: 'bold',
+          },
+        });
+        return;
+      }
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error("Please select a valid image file", {
+          duration: 4000,
+          position: 'top-center',
+          style: {
+            background: '#dc2626',
+            color: 'white',
+            fontWeight: 'bold',
+          },
+        });
+        return;
+      }
+
       setIsUploading(true);
       const imageUrl = URL.createObjectURL(file);
+      
+      // Simulate upload delay
       setTimeout(() => {
         handleMemberChange("image", imageUrl);
         setIsUploading(false);
+        
+        toast.success(`Photo uploaded for Member ${step}!`, {
+          duration: 3000,
+          position: 'top-center',
+          style: {
+            background: '#16a34a',
+            color: 'white',
+            fontWeight: 'bold',
+          },
+          icon: '🎉',
+        });
       }, 1000);
+    }
+  };
+
+  // Clear file input when moving to next member
+  const clearFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
   const handleNext = () => {
     if (step < 5) {
+      if (step > 0) {
+        const currentMember = members[step - 1];
+        if (currentMember.name && currentMember.email && currentMember.accommodationType) {
+          // Check if hosteler is selected but no hostel name is provided
+          if (currentMember.accommodationType === "hosteler" && !currentMember.hostelName) {
+            toast.error("Please select a hostel name", {
+              duration: 3000,
+              position: 'top-center',
+              style: {
+                background: '#dc2626',
+                color: 'white',
+                fontWeight: 'bold',
+              },
+            });
+            return;
+          }
+          
+          toast.success(`Member ${step} added successfully!`, {
+            duration: 3000,
+            position: 'top-center',
+            style: {
+              background: '#16a34a',
+              color: 'white',
+              fontWeight: 'bold',
+            },
+          });
+        } else {
+          toast.error("Please fill in all required fields", {
+            duration: 3000,
+            position: 'top-center',
+            style: {
+              background: '#dc2626',
+              color: 'white',
+              fontWeight: 'bold',
+            },
+          });
+          return;
+        }
+      } else if (step === 0) {
+        if (!teamName.trim()) {
+          toast.error("Please enter a team name", {
+            duration: 3000,
+            position: 'top-center',
+            style: {
+              background: '#dc2626',
+              color: 'white',
+              fontWeight: 'bold',
+            },
+          });
+          return;
+        }
+        toast.success("Team name set! Let's add your crew members", {
+          duration: 3000,
+          position: 'top-center',
+          style: {
+            background: '#16a34a',
+            color: 'white',
+            fontWeight: 'bold',
+          },
+        });
+      }
+      
       setStep(step + 1);
+      // Clear file input when moving to next member
+      clearFileInput();
     } else {
+      // Validate at least one member
+      const validMembers = members.filter(member => 
+        member.name && member.email && member.accommodationType &&
+        (member.accommodationType === "dayscholar" || 
+         (member.accommodationType === "hosteler" && member.hostelName))
+      );
+      
+      if (validMembers.length === 0) {
+        toast.error("Please add at least one team member with complete details", {
+          duration: 4000,
+          position: 'top-center',
+          style: {
+            background: '#dc2626',
+            color: 'white',
+            fontWeight: 'bold',
+          },
+        });
+        return;
+      }
+
       const registrationData = {
         teamName,
-        members,
+        members: validMembers,
         registeredAt: new Date().toISOString()
       };
       
@@ -99,60 +194,67 @@ function Registration() {
       const updatedRegistrations = [...existingRegistrations, registrationData];
       localStorage.setItem('teamRegistrations', JSON.stringify(updatedRegistrations));
       
-      navigate('/payment', { state: { registrationData } });
+      toast.success(`Team "${teamName}" registration completed! Redirecting to payment...`, {
+        duration: 4000,
+        position: 'top-center',
+        style: {
+          background: '#16a34a',
+          color: 'white',
+          fontWeight: 'bold',
+        },
+        icon: '🎊',
+      });
+
+      setTimeout(() => {
+        navigate('/payment', { state: { registrationData } });
+      }, 2000);
     }
   };
 
+  const currentMember = step > 0 ? members[step - 1] : null;
+
   return (
     <div className="min-h-screen w-full relative overflow-hidden">
-      {!hideLoader && (
-        <div
-          className={`fixed inset-0 bg-gradient-to-br from-[#0a0f2c] via-[#13233f] to-[#1a0a2e] 
-          flex flex-col items-center justify-center z-50 transition-all duration-700
-          ${isLoaded ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}
-        >
-          <div className="relative flex flex-col items-center">
-            <div className="absolute inset-0 w-80 h-80 rounded-full bg-gradient-to-r from-[#FFD700]/20 via-[#FF6B6B]/20 to-[#4ECDC4]/20 animate-spin blur-2xl"></div>
-            
-            {randomLoaderImage && (
-              <div className="relative">
-                <img 
-                  src={randomLoaderImage} 
-                  alt="Loading" 
-                  className="w-64 h-64 object-contain animate-pulse drop-shadow-2xl" 
-                />
-                <div className="absolute inset-0 pointer-events-none">
-                  {[...Array(6)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="absolute w-1 h-1 bg-[#FFD700] rounded-full animate-ping"
-                      style={{
-                        left: `${10 + i * 15}%`,
-                        top: `${10 + (i % 4) * 20}%`,
-                        animationDelay: `${i * 0.3}s`,
-                        animationDuration: `${2 + i * 0.2}s`,
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-            <div className="relative mt-8">
-              <p className="text-[#FFD700] text-xl font-bold animate-pulse drop-shadow-lg">
-                Preparing your registration...
-              </p>
-              <div className="w-56 h-1 bg-gray-800 rounded-full mt-6 overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-[#FFD700] via-[#FF6B6B] to-[#4ECDC4] rounded-full animate-pulse transform translate-x-[-100%] animate-[loadingBar_2s_ease-in-out_infinite]"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* React Hot Toast Container */}
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        gutter={8}
+        containerStyle={{
+          top: 20,
+          left: 20,
+          bottom: 20,
+          right: 20,
+        }}
+        toastOptions={{
+          duration: 3000,
+          style: {
+            borderRadius: '12px',
+            fontSize: '12px',
+            maxWidth: '350px',
+            padding: '12px 16px',
+            boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
+            fontFamily: 'Poppins, sans-serif',
+            zIndex: 9999,
+          },
+          success: {
+            iconTheme: {
+              primary: '#16a34a',
+              secondary: 'white',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#dc2626',
+              secondary: 'white',
+            },
+          },
+        }}
+      />
+      
       <div className="absolute inset-0 z-0">
         <div
-          className={`w-full h-full bg-cover bg-center bg-no-repeat transition-all duration-2000 ${
-            isLoaded ? "scale-100 opacity-100" : "scale-110 opacity-0"
-          }`}
+          className="w-full h-full bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${bgImg})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-transparent to-black/60" />
@@ -173,33 +275,29 @@ function Registration() {
         </div>
       </div>
 
-      <div className="min-h-screen w-full flex items-center justify-center px-4 py-12 relative z-10">
-        <div
-          className={`relative w-full max-w-4xl transition-all duration-1000 delay-300 ${
-            isLoaded
-              ? "translate-y-0 opacity-100 scale-100"
-              : "translate-y-10 opacity-0 scale-95"
-          }`}
-        >
+      <div className="min-h-screen w-full flex items-center justify-center px-2 sm:px-4 py-4 sm:py-12 relative z-10">
+        <div className="relative w-full max-w-4xl">
           <div
-            className="rounded-3xl border-2 border-yellow-500/40 shadow-2xl shadow-yellow-500/20 p-8 sm:p-12 flex flex-col gap-8 relative overflow-hidden backdrop-blur-sm"
+            className="rounded-2xl sm:rounded-3xl border-2 border-yellow-500/40 shadow-2xl shadow-yellow-500/20 p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col gap-4 sm:gap-6 lg:gap-8 relative overflow-hidden backdrop-blur-sm"
             style={{ backgroundImage: `url(${one})` }}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/30 rounded-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/30 rounded-2xl sm:rounded-3xl" />
 
-            <div className="absolute top-6 left-6 w-8 h-8 border-l-3 border-t-3 border-[#FFD700] rounded-tl-2xl animate-pulse" />
-            <div className="absolute top-6 right-6 w-8 h-8 border-r-3 border-t-3 border-[#FFD700] rounded-tr-2xl animate-pulse" />
-            <div className="absolute bottom-6 left-6 w-8 h-8 border-l-3 border-b-3 border-[#FFD700] rounded-bl-2xl animate-pulse" />
-            <div className="absolute bottom-6 right-6 w-8 h-8 border-r-3 border-b-3 border-[#FFD700] rounded-br-2xl animate-pulse" />
+            {/* Corner decorations - hidden on small mobile */}
+            <div className="hidden sm:block absolute top-6 left-6 w-8 h-8 border-l-3 border-t-3 border-[#FFD700] rounded-tl-2xl animate-pulse" />
+            <div className="hidden sm:block absolute top-6 right-6 w-8 h-8 border-r-3 border-t-3 border-[#FFD700] rounded-tr-2xl animate-pulse" />
+            <div className="hidden sm:block absolute bottom-6 left-6 w-8 h-8 border-l-3 border-b-3 border-[#FFD700] rounded-bl-2xl animate-pulse" />
+            <div className="hidden sm:block absolute bottom-6 right-6 w-8 h-8 border-r-3 border-b-3 border-[#FFD700] rounded-br-2xl animate-pulse" />
 
+            {/* Floating elements - reduced for mobile */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              {[...Array(8)].map((_, i) => (
+              {[...Array(4)].map((_, i) => (
                 <div
                   key={i}
-                  className="absolute w-3 h-3 bg-gradient-to-r from-[#FFD700] to-[#FFA500] rounded-full opacity-70 animate-bounce shadow-lg"
+                  className="absolute w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-[#FFD700] to-[#FFA500] rounded-full opacity-70 animate-bounce shadow-lg"
                   style={{
-                    left: `${5 + i * 12}%`,
-                    top: `${15 + (i % 4) * 20}%`,
+                    left: `${10 + i * 20}%`,
+                    top: `${20 + (i % 2) * 40}%`,
                     animationDelay: `${i * 0.4}s`,
                     animationDuration: `${3 + i * 0.3}s`,
                     filter: 'drop-shadow(0 0 6px rgba(255, 215, 0, 0.6))',
@@ -210,23 +308,22 @@ function Registration() {
 
             <div className="relative">
               <h1
-                className={`text-4xl sm:text-5xl font-bold bg-gradient-to-r from-[#362F1C] via-[#4A3F2A] to-[#362F1C] bg-clip-text text-center transition-all duration-1000 delay-500 drop-shadow-lg ${
-                  isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-                }`}
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#362F1C] via-[#4A3F2A] to-[#362F1C] bg-clip-text text-center drop-shadow-lg"
                 style={{ textShadow: '2px 2px 4px rgba(54, 47, 28, 0.3)' }}
               >
                 {step === 0 ? "⚔️ Team Registration ⚔️" : `🏴‍☠️ Member ${step} Details 🏴‍☠️`}
               </h1>
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent rounded-full"></div>
+              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 sm:w-32 h-1 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent rounded-full"></div>
             </div>
 
+            {/* Progress indicator */}
             {step > 0 && (
-              <div className="flex justify-center mb-4">
+              <div className="flex justify-center mb-2 sm:mb-4">
                 <div className="flex space-x-2">
                   {[1, 2, 3, 4, 5].map((num) => (
                     <div
                       key={num}
-                      className={`w-3 h-3 rounded-full transition-all duration-500 ${
+                      className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-500 ${
                         num <= step
                           ? 'bg-gradient-to-r from-[#FFD700] to-[#FFA500] shadow-lg shadow-yellow-500/50 scale-110'
                           : 'bg-gray-400/50 border border-gray-300'
@@ -237,32 +334,17 @@ function Registration() {
               </div>
             )}
 
-            {step > 0 && (
-              <div
-                className={`relative mx-auto w-full max-w-sm transition-all duration-1000 delay-600 ${
-                  isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-                }`}
-              >
+            {/* Conditional Image Display - Show only if image exists */}
+            {step > 0 && currentMember?.image && (
+              <div className="relative mx-auto w-full max-w-xs sm:max-w-sm mb-4 sm:mb-6">
                 <div className="relative group">
-                  <div className="absolute -inset-1  rounded-lg blur opacity-75 transition"></div>
-                  <div className="relative border-2  overflow-hidden rounded-lg shadow-xl bg-black/30 w-full h-64 flex items-center justify-center backdrop-blur-sm transition-all duration-300">
-                    {isUploading ? (
-                      <div className="flex flex-col items-center space-y-2">
-                        <Loader2 className="text-yellow-400 animate-spin" size={32} />
-                        <p className="text-yellow-400 text-sm font-medium">Uploading...</p>
-                      </div>
-                    ) : members[step - 1]?.image ? (
-                      <img
-                        src={members[step - 1].image}
-                        alt="Crew Member"
-                        className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="text-center text-yellow-400">
-                        <div className="text-4xl mb-2">📸</div>
-                        <span className="text-sm font-medium">Upload Photo</span>
-                      </div>
-                    )}
+                  <div className="absolute -inset-1 rounded-lg blur opacity-75 transition bg-gradient-to-r from-[#FFD700] to-[#FFA500]"></div>
+                  <div className="relative border-2 border-yellow-500/40 overflow-hidden rounded-lg shadow-xl bg-black/30 w-full h-48 sm:h-64 flex items-center justify-center backdrop-blur-sm transition-all duration-300">
+                    <img
+                      src={currentMember.image}
+                      alt="Crew Member"
+                      className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                    />
                   </div>
                 </div>
               </div>
@@ -273,16 +355,12 @@ function Registration() {
                 e.preventDefault();
                 handleNext();
               }}
-              className="space-y-8 relative z-10"
+              className="space-y-4 sm:space-y-6 lg:space-y-8 relative z-10"
             >
-              <div
-                className={`transition-all duration-1000 delay-${700 + step * 100} ${
-                  isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-                }`}
-              >
+              <div>
                 {step === 0 ? (
-                  <div className="pb-4">
-                    <label className="block font-[poppins] text-[#362F1C] text-xl mb-3 font-bold tracking-wide">
+                  <div className="pb-2 sm:pb-4">
+                    <label className="block font-[poppins] text-[#362F1C] text-lg sm:text-xl mb-2 sm:mb-3 font-bold tracking-wide">
                       🏴‍☠️ TEAM NAME
                     </label>
                     <div className="relative group">
@@ -295,62 +373,21 @@ function Registration() {
                         onBlur={() => setFocusedInput("")}
                         onMouseEnter={() => setHoveredInput("teamName")}
                         onMouseLeave={() => setHoveredInput("")}
-                        className={`w-full px-2 py-3 font-[poppins] text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 transition-all duration-300 focus:outline-none focus:ring-0 `}
+                        className="w-full px-2 py-2 sm:py-3 font-[poppins] text-base sm:text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 border-[#362F1C]/40 transition-all duration-300 focus:outline-none focus:ring-0 focus:border-[#FFD700] placeholder:text-[#362F1C]/60"
                         required
                       />
-                  
                     </div>
                   </div>
                 ) : (
                   <>
-                    <div className="pb-4">
-                      <label className="block font-[poppins] text-[#362F1C] text-xl font-bold mb-3 tracking-wide">
-                         FULL NAME
-                      </label>
-                      <div className="relative group">
-                        <input
-                          type="text"
-                          value={members[step - 1].name}
-                          onChange={(e) => handleMemberChange("name", e.target.value)}
-                          placeholder="Enter the pirate's full name..."
-                          onFocus={() => setFocusedInput("name")}
-                          onBlur={() => setFocusedInput("")}
-                          onMouseEnter={() => setHoveredInput("name")}
-                          onMouseLeave={() => setHoveredInput("")}
-                          className={`w-full font-[poppins] px-2 py-3 text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 transition-all duration-300 focus:outline-none focus:ring-0`}
-                          required
-                        />
-        
-                      </div>
-                    </div>
-
-                    <div className="pb-4">
-                      <label className="block font-[poppins] text-[#362F1C] text-xl mb-3 font-bold tracking-wide">
-                         EMAIL
-                      </label>
-                      <div className="relative group">
-                        <input
-                          type="email"
-                          value={members[step - 1].email}
-                          onChange={(e) => handleMemberChange("email", e.target.value)}
-                          placeholder="Enter the pirate's email..."
-                          onFocus={() => setFocusedInput("email")}
-                          onBlur={() => setFocusedInput("")}
-                          onMouseEnter={() => setHoveredInput("email")}
-                          onMouseLeave={() => setHoveredInput("")}
-                          className={`w-full font-[poppins] px-2 py-3 text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 transition-all duration-300 focus:outline-none focus:ring-0`}
-                          required
-                        />
-          
-                      </div>
-                    </div>
-
-                    <div className="pt-6">
-                      <label className="block font-[poppins] text-[#362F1C] text-xl mb-3 font-bold tracking-wide">
+                    {/* Upload Photo Section */}
+                    <div className="pb-4 sm:pb-6">
+                      <label className="block font-[poppins] text-[#362F1C] text-lg sm:text-xl mb-2 sm:mb-3 font-bold tracking-wide">
                         UPLOAD PHOTO (OPTIONAL)
                       </label>
                       <div className="relative group">
                         <input
+                          ref={fileInputRef}
                           type="file"
                           accept="image/*"
                           onChange={(e) => handleImageUpload(e.target.files[0])}
@@ -358,32 +395,159 @@ function Registration() {
                           onBlur={() => setFocusedInput("")}
                           onMouseEnter={() => setHoveredInput("photo")}
                           onMouseLeave={() => setHoveredInput("")}
-                          className={`w-full px-2 font-[poppins] py-3 text-lg rounded-lg bg-gradient-to-r from-yellow-500/10 to-yellow-600/10 text-[#362F1C] border-2 transition-all duration-300 focus:outline-none focus:ring-2 file:mr-4 file:py-2 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#FFD700] file:to-[#FFA500] file:text-[#362F1C] hover:file:shadow-2xs file:transition-all file:duration-300 hover:file:scale-105 `}
+                          className="w-full px-2 font-[poppins] py-2 sm:py-3 text-sm sm:text-base rounded-lg bg-gradient-to-r from-yellow-500/10 to-yellow-600/10 text-[#362F1C] border-2 border-[#362F1C]/20 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#FFD700]/50 focus:border-[#FFD700] file:mr-2 sm:file:mr-4 file:py-1 sm:file:py-2 file:px-3 sm:file:px-4 file:rounded-full file:border-0 file:text-xs sm:file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#FFD700] file:to-[#FFA500] file:text-[#362F1C] hover:file:shadow-lg file:transition-all file:duration-300 hover:file:scale-105"
+                        />
+                      </div>
+                      {isUploading && (
+                        <div className="flex items-center justify-center mt-2">
+                          <Loader2 className="text-yellow-400 animate-spin mr-2" size={20} />
+                          <span className="text-yellow-400 text-sm font-medium">Uploading...</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Full Name */}
+                    <div className="pb-2 sm:pb-4">
+                      <label className="block font-[poppins] text-[#362F1C] text-lg sm:text-xl font-bold mb-2 sm:mb-3 tracking-wide">
+                        FULL NAME *
+                      </label>
+                      <div className="relative group">
+                        <input
+                          type="text"
+                          value={currentMember?.name || ""}
+                          onChange={(e) => handleMemberChange("name", e.target.value)}
+                          placeholder="Enter the pirate's full name..."
+                          onFocus={() => setFocusedInput("name")}
+                          onBlur={() => setFocusedInput("")}
+                          onMouseEnter={() => setHoveredInput("name")}
+                          onMouseLeave={() => setHoveredInput("")}
+                          className="w-full font-[poppins] px-2 py-2 sm:py-3 text-base sm:text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 border-[#362F1C]/40 transition-all duration-300 focus:outline-none focus:ring-0 focus:border-[#FFD700] placeholder:text-[#362F1C]/60"
+                          required
                         />
                       </div>
                     </div>
+
+                    {/* Email */}
+                    <div className="pb-2 sm:pb-4">
+                      <label className="block font-[poppins] text-[#362F1C] text-lg sm:text-xl mb-2 sm:mb-3 font-bold tracking-wide">
+                        EMAIL *
+                      </label>
+                      <div className="relative group">
+                        <input
+                          type="email"
+                          value={currentMember?.email || ""}
+                          onChange={(e) => handleMemberChange("email", e.target.value)}
+                          placeholder="Enter the pirate's email..."
+                          onFocus={() => setFocusedInput("email")}
+                          onBlur={() => setFocusedInput("")}
+                          onMouseEnter={() => setHoveredInput("email")}
+                          onMouseLeave={() => setHoveredInput("")}
+                          className="w-full font-[poppins] px-2 py-2 sm:py-3 text-base sm:text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 border-[#362F1C]/40 transition-all duration-300 focus:outline-none focus:ring-0 focus:border-[#FFD700] placeholder:text-[#362F1C]/60"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Accommodation Type */}
+                    <div className="pb-2 sm:pb-4">
+                      <label className="block font-[poppins] text-[#362F1C] text-lg sm:text-xl mb-2 sm:mb-3 font-bold tracking-wide">
+                        ACCOMMODATION TYPE *
+                      </label>
+                      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                        <button
+                          type="button"
+                          onClick={() => handleMemberChange("accommodationType", "dayscholar")}
+                          className={`py-2 sm:py-3 px-3 sm:px-4 rounded-lg font-[poppins] font-bold text-sm sm:text-base transition-all duration-300 ${
+                            currentMember?.accommodationType === "dayscholar"
+                              ? "bg-gradient-to-r from-[#FFD700] to-[#FFA500] text-[#362F1C] shadow-lg transform scale-105"
+                              : "bg-gradient-to-r from-blue-500/10 to-blue-600/10 text-[#362F1C] border-2 border-[#362F1C]/20 hover:border-[#FFD700] hover:scale-102"
+                          }`}
+                        >
+                           Day Scholar
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleMemberChange("accommodationType", "hosteler")}
+                          className={`py-2 sm:py-3 px-3 sm:px-4 rounded-lg font-[poppins] font-bold text-sm sm:text-base transition-all duration-300 ${
+                            currentMember?.accommodationType === "hosteler"
+                              ? "bg-gradient-to-r from-[#FFD700] to-[#FFA500] text-[#362F1C] shadow-lg transform scale-105"
+                              : "bg-gradient-to-r from-blue-500/10 to-blue-600/10 text-[#362F1C] border-2 border-[#362F1C]/20 hover:border-[#FFD700] hover:scale-102"
+                          }`}
+                        >
+                           Hosteler
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Hostel Selection - Only show for hostelers */}
+                    {currentMember?.accommodationType === "hosteler" && (
+                      <div className="pb-2 sm:pb-4">
+                        <label className="block font-[poppins] text-[#362F1C] text-lg sm:text-xl mb-2 sm:mb-3 font-bold tracking-wide">
+                          🏢 SELECT HOSTEL *
+                        </label>
+                        <div className="relative">
+                          <select
+                            value={currentMember?.hostelName || ""}
+                            onChange={(e) => handleMemberChange("hostelName", e.target.value)}
+                            className="w-full px-2 py-2 sm:py-3 font-[poppins] text-base sm:text-lg rounded-lg bg-gradient-to-r from-yellow-500/10 to-yellow-600/10 text-[#362F1C] border-2 border-[#362F1C]/20 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#FFD700]/50 focus:border-[#FFD700] appearance-none cursor-pointer"
+                            required
+                          >
+                            <option value="" disabled>Select your hostel...</option>
+                            {hostelOptions.map((hostel) => (
+                              <option key={hostel} value={hostel} className="bg-white text-[#362F1C]">
+                                {hostel}
+                              </option>
+                            ))}
+                          </select>
+                          <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#362F1C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Room Number - Show for both but required validation handled above */}
+                    {currentMember?.accommodationType && currentMember?.accommodationType === "hosteler" && (
+                      <div className="pb-2 sm:pb-4">
+                        <label className="block font-[poppins] text-[#362F1C] text-lg sm:text-xl mb-2 sm:mb-3 font-bold tracking-wide">
+                           ROOM NUMBER (OPTIONAL)
+                        </label>
+                        <div className="relative group">
+                          <input
+                            type="text"
+                            value={currentMember?.roomNumber || ""}
+                            onChange={(e) => handleMemberChange("roomNumber", e.target.value)}
+                            placeholder={currentMember?.accommodationType === "dayscholar" ? "N/A for Day Scholars" : "Enter room number..."}
+                            onFocus={() => setFocusedInput("roomNumber")}
+                            onBlur={() => setFocusedInput("")}
+                            onMouseEnter={() => setHoveredInput("roomNumber")}
+                            onMouseLeave={() => setHoveredInput("")}
+                            className="w-full font-[poppins] px-2 py-2 sm:py-3 text-base sm:text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 border-[#362F1C]/40 transition-all duration-300 focus:outline-none focus:ring-0 focus:border-[#FFD700] placeholder:text-[#362F1C]/60"
+                            disabled={currentMember?.accommodationType === "dayscholar"}
+                          />
+                        </div>
+                      </div>
+                    )}
                   </>
                 )}
               </div>
 
-              <div
-                className={`transition-all duration-1000 delay-${800 + step * 100} ${
-                  isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-                }`}
-              >
+              <div className="pt-2 sm:pt-4">
                 <div className="relative group">
-                  <div className={`absolute -inset-1 border-2 border-amber-300  bg-red-700 rounded-xl  opacity-75 transition-all duration-500`}></div>
+                  <div className="absolute -inset-1 border-2 border-amber-300 bg-red-700 rounded-xl opacity-75 transition-all duration-500"></div>
                   <button
                     type="submit"
                     disabled={isUploading}
                     onMouseEnter={() => setButtonHovered(true)}
                     onMouseLeave={() => setButtonHovered(false)}
-                    className={`relative w-full font-[poppins] py-4  text-white text-xl font-bold rounded-xl shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform`}
+                    className="relative w-full font-[poppins] py-3 sm:py-4 text-white text-base sm:text-xl font-bold rounded-xl shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-95"
                   >
                     <span className="relative z-10 flex items-center justify-center space-x-2">
                       <span>
                         {step === 0
-                          ? " Add First Crew Member"
+                          ? "🚀 Add First Crew Member"
                           : step < 5
                           ? `⚡ Add Member ${step + 1}`
                           : "🏆 Submit Complete Crew"}
@@ -396,7 +560,6 @@ function Registration() {
                         </span>
                       )}
                     </span>
-                   
                   </button>
                 </div>
               </div>
@@ -406,12 +569,6 @@ function Registration() {
       </div>
 
       <style jsx>{`
-        @keyframes loadingBar {
-          0% { transform: translateX(-100%); }
-          50% { transform: translateX(0%); }
-          100% { transform: translateX(100%); }
-        }
-        
         @keyframes float {
           0%, 100% { 
             transform: translateY(0px) rotate(0deg);
@@ -425,6 +582,13 @@ function Registration() {
         
         .animate-float {
           animation: float 4s ease-in-out infinite;
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 640px) {
+          .font-[poppins] {
+            font-size: 14px;
+          }
         }
       `}</style>
     </div>
