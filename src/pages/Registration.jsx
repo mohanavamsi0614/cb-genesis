@@ -6,16 +6,22 @@ import bgImg from "../assets/bg.jpg";
 import one from "../assets/one.jpg";
 
 function Registration() {
+  const teamData=JSON.parse(localStorage.getItem("teamRegistrations")) || {teamName:"", lead:{}, members:[{ name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
+    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
+    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
+    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
+    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
+  ]}
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [step, setStep] = useState(0);
-  const [teamName, setTeamName] = useState("");
+  const [teamName, setTeamName] = useState(teamData.teamName);
   const [members, setMembers] = useState([
-    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
-    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
-    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
-    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
-    { name: "", email: "", role: "", image: null, accommodationType: "", hostelName: "", roomNumber: "" },
+    { name: teamData.lead.name, email: teamData.lead.email, role: teamData.lead.role, image: teamData.lead.image, accommodationType: teamData.lead.accommodationType, hostelName: teamData.lead.hostelName, roomNumber: teamData.lead.roomNumber },
+    { name: teamData.members[0].name, email: teamData.members[0].email, role: teamData.members[0].role, image: teamData.members[0].image, accommodationType: teamData.members[0].accommodationType, hostelName: teamData.members[0].hostelName, roomNumber: teamData.members[0].roomNumber },
+    { name: teamData.members[1].name, email: teamData.members[1].email, role: teamData.members[1].role, image: teamData.members[1].image, accommodationType: teamData.members[1].accommodationType, hostelName: teamData.members[1].hostelName, roomNumber: teamData.members[1].roomNumber },
+    { name: teamData.members[2].name, email: teamData.members[2].email, role: teamData.members[2].role, image: teamData.members[2].image, accommodationType: teamData.members[2].accommodationType, hostelName: teamData.members[2].hostelName, roomNumber: teamData.members[2].roomNumber },
+    { name: teamData.members[3].name, email: teamData.members[3].email, role: teamData.members[3].role, image: teamData.members[3].image, accommodationType: teamData.members[3].accommodationType, hostelName: teamData.members[3].hostelName, roomNumber: teamData.members[3].roomNumber },
   ]);
   const [isUploading, setIsUploading] = useState(false);
   const [buttonHovered, setButtonHovered] = useState(false);
@@ -33,7 +39,7 @@ function Registration() {
     if (field === "accommodationType" && value === "dayscholar") {
       updatedMembers[step - 1].hostelName = "";
     }
-    
+    localStorage.setItem("teamRegistrations",JSON.stringify({...teamData,lead:updatedMembers[0],members:updatedMembers.slice(1)}))
     setMembers(updatedMembers);
   };
 
@@ -186,13 +192,11 @@ function Registration() {
 
       const registrationData = {
         teamName,
-        members: validMembers,
+        lead: validMembers[0],
+        members: validMembers.slice(1),
         registeredAt: new Date().toISOString()
       };
       
-      const existingRegistrations = JSON.parse(localStorage.getItem('teamRegistrations') || '[]');
-      const updatedRegistrations = [...existingRegistrations, registrationData];
-      localStorage.setItem('teamRegistrations', JSON.stringify(updatedRegistrations));
       
       toast.success(`Team "${teamName}" registration completed! Redirecting to payment...`, {
         duration: 4000,
@@ -361,14 +365,16 @@ function Registration() {
                 {step === 0 ? (
                   <div className="pb-2 sm:pb-4">
                     <label className="block font-[poppins] text-[#362F1C] text-lg sm:text-xl mb-2 sm:mb-3 font-bold tracking-wide">
-                      🏴‍☠️ TEAM NAME
+                      TEAM NAME
                     </label>
                     <div className="relative group">
                       <input
                         type="text"
                         placeholder="Enter your crew's legendary name..."
                         value={teamName}
-                        onChange={(e) => setTeamName(e.target.value)}
+                        onChange={(e) =>{ 
+                          localStorage.setItem("teamRegistrations",JSON.stringify({...teamData,teamName:e.target.value}))
+                          setTeamName(e.target.value)}}
                         onFocus={() => setFocusedInput("teamName")}
                         onBlur={() => setFocusedInput("")}
                         onMouseEnter={() => setHoveredInput("teamName")}

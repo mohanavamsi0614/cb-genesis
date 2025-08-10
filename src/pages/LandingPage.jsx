@@ -3,7 +3,6 @@ import logo from '../assets/logo.png';
 import { useState, useEffect } from "react";
 import kareLogo from "../assets/klulogo.png";
 import cbLogo from "../assets/codingBlocks.png";
-import bgimg from "../assets/bg.jpg";
 import { Link } from "react-router-dom";
 import one from "../assets/one.jpg";
 import title from "../assets/title.png";
@@ -385,13 +384,15 @@ function LandingPage() {
               </motion.h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[
-                  "Participants receive a random domain",
-                  "Identify a real-world problem in the assigned domain related to KARE", 
-                  "Develop innovative solutions to address the challenge",
-                  "Fosters critical thinking, problem-solving, and creativity",
-                  "Empowers contributions toward meaningful advancements in KARE",
-                  "Intense, collaborative, and exciting innovation experience"
-                ].map((item, i) => (
+  "Choose Your Domain: Pick from a curated set of domains revealed at the event",
+  "Identify a Real-World Problem: Find a challenge worth solving in your chosen domain",
+  "Integrate Generative AI: Use cutting-edge AI tools to power your solution",
+  "Innovate & Build: Turn your ideas into impactful, working prototypes",
+  "Collaborate & Compete: Team up, share ideas, and push creative boundaries",
+  "Showcase Your Impact: Present your AI-powered creation to judges and peers"
+]
+
+.map((item, i) => (
                   <motion.div 
                     key={i} 
                     className="bg-[#0d1628]/60 backdrop-blur-sm rounded-lg p-4 border border-[#FFD700]/20"

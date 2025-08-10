@@ -1,18 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Loader2 } from "lucide-react";
 import bgImg from "../assets/bg.jpg";
 import one from "../assets/one.jpg";
+import { io } from "socket.io-client";
 
+const socket=io("http://localhost:3001")
 function Payment() {
   const location = useLocation();
   const navigate = useNavigate();
   const { registrationData } = location.state || {};
-  const [isUploading, setIsUploading] = useState(false);
+  const wid = useRef();
+  const [imgUrl, setImgUrl] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
-  const [preview, setPreview] = useState(null);
+  const [done,setDone]=useState(false);
 
-  const totalAmount = registrationData ? registrationData.members.length * 350 : 0;
+  
+
+  const totalAmount = registrationData ? registrationData.members.length * 350 + 350 : 0;
 
   useEffect(() => {
     const images = [bgImg, one];
@@ -28,18 +32,39 @@ function Payment() {
         }
       };
     });
+    if (done){
+    return (
+      <div>
+        Sorry registration are completed the slots are filled 😓 we hope you will understand 🥺 thanks a lot for your intrest we will get back to you with an update.If your payment was done Please contact this number <b className=" text-red-400">6281605767</b>
+      </div>
+    )
+  }
+    let myWidget = cloudinary.createUploadWidget(
+          {
+            cloudName: "dfseckyjx",
+            uploadPreset: "qbvu3y5j",
+          },
+          (error, result) => {
+            if (!error && result && result.event === "success") {
+              console.log("Done! Here is the image info: ", result.info);
+              setImgUrl(result.info.secure_url);
+            } else if (error) {
+              console.error("Error during Cloudinary upload:", error);
+              alert("here at image " + error);
+            }
+          }
+        );
+        wid.current = myWidget;
+
+        socket.emit("check")
+        socket.on("see",(res)=>{
+          if (res=="omk"){
+            setDone(true)
+          }
+        })
   }, []);
 
-  const handleImageUpload = (file) => {
-    if (file) {
-      setPreview(URL.createObjectURL(file)); // Show preview
-      setIsUploading(true);
-      setTimeout(() => {
-        setIsUploading(false);
-      }, 1000);
-    }
-  };
-
+  
   return (
     <div className="min-h-screen w-full relative overflow-hidden">
       {/* Background Transition */}
@@ -90,6 +115,11 @@ function Payment() {
                   <p>
                     <strong>Team Name:</strong> {registrationData.teamName}
                   </p>
+                  {registrationData.lead && (
+                    <p>
+                      <strong>Lead:</strong> {registrationData.lead.name || "Lead"} x 350
+                    </p>
+                  )}
                   {registrationData.members.map((member, index) => (
                     <p key={index}>
                       <strong>Member {index + 1}:</strong> {member.name || `Member ${index + 1}`} x 350
@@ -124,7 +154,6 @@ function Payment() {
                 <br/>
 
                 {/* Payment Form */}
-                <form className="font-[poppins] space-y-6">
                   <div>
                     <label className="block text-sm font-medium">
                       Your UPI ID: <span className="text-red-600">*</span>
@@ -154,25 +183,16 @@ function Payment() {
                     <label className="block text-sm font-semibold text-[#362F1C] mb-1">
                       TRANSACTION SCREENSHOT: <span className="text-red-600">*</span>
                     </label>
-                    {isUploading ? (
-                      <div className="flex items-center justify-center py-4">
-                        <Loader2 className="animate-spin text-yellow-500" size={24} />
-                      </div>
+                    {imgUrl ? (
+                      <button className=" p-3  rounded-xl shadow font-semibold bg-yellow-500 text-white" onClick={() => wid.current.open()}>Re-Upload</button>
                     ) : (
-                      <input
-                        type="file"
-                        required
-                        accept="image/*"
-                        onChange={(e) => handleImageUpload(e.target.files[0])}
-                        className="w-full px-0 py-2 border-0 border-b border-[#362F1C] bg-transparent focus:outline-none file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-yellow-500/20 file:text-[#362F1C] hover:file:bg-yellow-500/30"
-                      />
+                      <button className=" p-3  rounded-xl shadow font-semibold bg-yellow-500 text-white" onClick={() => wid.current.open()}>Upload</button>
                     )}
-
-                    {preview && (
+                    {imgUrl && (
                       <div className="mt-4 text-center">
                         <p className="text-sm text-gray-600 mb-2">Preview:</p>
                         <img
-                          src={preview}
+                          src={imgUrl}
                           alt="Transaction Preview"
                           className="w-48 mx-auto rounded-lg shadow-md border border-yellow-400"
                         />
@@ -183,10 +203,10 @@ function Payment() {
                   <button
                     type="submit"
                     className="w-full mt-8 py-3 bg-gradient-to-r from-red-700 to-red-900 text-white text-lg rounded-lg border-2 border-yellow-500 shadow-lg hover:shadow-yellow-500/30 transition-all duration-300 hover:scale-105 hover:from-red-800 hover:to-red-950 disabled:opacity-50"
+                  // onClick={}
                   >
                     Submit Payment
                   </button>
-                </form>
               </>
             ) : (
               <div className="text-center py-8">
