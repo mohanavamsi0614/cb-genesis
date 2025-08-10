@@ -210,7 +210,7 @@ function Registration() {
 
             <div className="relative">
               <h1
-                className={`text-4xl sm:text-5xl font-bold bg-gradient-to-r from-[#362F1C] via-[#4A3F2A] to-[#362F1C] bg-clip-text text-transparent text-center transition-all duration-1000 delay-500 drop-shadow-lg ${
+                className={`text-4xl sm:text-5xl font-bold bg-gradient-to-r from-[#362F1C] via-[#4A3F2A] to-[#362F1C] bg-clip-text text-center transition-all duration-1000 delay-500 drop-shadow-lg ${
                   isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
                 }`}
                 style={{ textShadow: '2px 2px 4px rgba(54, 47, 28, 0.3)' }}
@@ -244,8 +244,8 @@ function Registration() {
                 }`}
               >
                 <div className="relative group">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-[#FFD700] via-[#FF6B6B] to-[#4ECDC4] rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-500 animate-pulse"></div>
-                  <div className="relative border-2 border-yellow-500 overflow-hidden rounded-lg shadow-xl bg-black/30 w-full h-64 flex items-center justify-center backdrop-blur-sm transition-all duration-300 group-hover:scale-105">
+                  <div className="absolute -inset-1  rounded-lg blur opacity-75 transition"></div>
+                  <div className="relative border-2  overflow-hidden rounded-lg shadow-xl bg-black/30 w-full h-64 flex items-center justify-center backdrop-blur-sm transition-all duration-300">
                     {isUploading ? (
                       <div className="flex flex-col items-center space-y-2">
                         <Loader2 className="text-yellow-400 animate-spin" size={32} />
@@ -295,23 +295,17 @@ function Registration() {
                         onBlur={() => setFocusedInput("")}
                         onMouseEnter={() => setHoveredInput("teamName")}
                         onMouseLeave={() => setHoveredInput("")}
-                        className={`w-full px-2 py-3 font-[poppins] text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 transition-all duration-300 focus:outline-none focus:ring-0 ${
-                          focusedInput === "teamName" || hoveredInput === "teamName"
-                            ? "border-[#FFD700] shadow-lg shadow-yellow-500/30 transform scale-105"
-                            : "border-[#362F1C] hover:border-yellow-400"
-                        }`}
+                        className={`w-full px-2 py-3 font-[poppins] text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 transition-all duration-300 focus:outline-none focus:ring-0 `}
                         required
                       />
-                      <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#FFD700] to-[#FFA500] transition-all duration-300 ${
-                        focusedInput === "teamName" ? "w-full" : "w-0"
-                      }`}></div>
+                  
                     </div>
                   </div>
                 ) : (
                   <>
                     <div className="pb-4">
                       <label className="block font-[poppins] text-[#362F1C] text-xl font-bold mb-3 tracking-wide">
-                        👤 FULL NAME
+                         FULL NAME
                       </label>
                       <div className="relative group">
                         <input
@@ -323,22 +317,16 @@ function Registration() {
                           onBlur={() => setFocusedInput("")}
                           onMouseEnter={() => setHoveredInput("name")}
                           onMouseLeave={() => setHoveredInput("")}
-                          className={`w-full font-[poppins] px-2 py-3 text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 transition-all duration-300 focus:outline-none focus:ring-0 ${
-                            focusedInput === "name" || hoveredInput === "name"
-                              ? "border-[#FFD700] shadow-lg shadow-yellow-500/30 transform scale-105"
-                              : "border-[#362F1C] hover:border-yellow-400"
-                          }`}
+                          className={`w-full font-[poppins] px-2 py-3 text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 transition-all duration-300 focus:outline-none focus:ring-0`}
                           required
                         />
-                        <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#FFD700] to-[#FFA500] transition-all duration-300 ${
-                          focusedInput === "name" ? "w-full" : "w-0"
-                        }`}></div>
+        
                       </div>
                     </div>
 
                     <div className="pb-4">
                       <label className="block font-[poppins] text-[#362F1C] text-xl mb-3 font-bold tracking-wide">
-                        📧 EMAIL
+                         EMAIL
                       </label>
                       <div className="relative group">
                         <input
@@ -350,22 +338,16 @@ function Registration() {
                           onBlur={() => setFocusedInput("")}
                           onMouseEnter={() => setHoveredInput("email")}
                           onMouseLeave={() => setHoveredInput("")}
-                          className={`w-full font-[poppins] px-2 py-3 text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 transition-all duration-300 focus:outline-none focus:ring-0 ${
-                            focusedInput === "email" || hoveredInput === "email"
-                              ? "border-[#FFD700] shadow-lg shadow-yellow-500/30 transform scale-105"
-                              : "border-[#362F1C] hover:border-yellow-400"
-                          }`}
+                          className={`w-full font-[poppins] px-2 py-3 text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 transition-all duration-300 focus:outline-none focus:ring-0`}
                           required
                         />
-                        <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#FFD700] to-[#FFA500] transition-all duration-300 ${
-                          focusedInput === "email" ? "w-full" : "w-0"
-                        }`}></div>
+          
                       </div>
                     </div>
 
                     <div className="pt-6">
                       <label className="block font-[poppins] text-[#362F1C] text-xl mb-3 font-bold tracking-wide">
-                        📷 UPLOAD PHOTO (OPTIONAL)
+                        UPLOAD PHOTO (OPTIONAL)
                       </label>
                       <div className="relative group">
                         <input
@@ -376,11 +358,7 @@ function Registration() {
                           onBlur={() => setFocusedInput("")}
                           onMouseEnter={() => setHoveredInput("photo")}
                           onMouseLeave={() => setHoveredInput("")}
-                          className={`w-full px-2 font-[poppins] py-3 text-lg rounded-lg bg-gradient-to-r from-yellow-500/10 to-yellow-600/10 text-[#362F1C] border-2 transition-all duration-300 focus:outline-none focus:ring-2 file:mr-4 file:py-2 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#FFD700] file:to-[#FFA500] file:text-[#362F1C] hover:file:shadow-lg file:transition-all file:duration-300 hover:file:scale-105 ${
-                            focusedInput === "photo" || hoveredInput === "photo"
-                              ? "border-[#FFD700] shadow-xl shadow-yellow-500/40 bg-gradient-to-r from-yellow-500/20 to-yellow-600/20"
-                              : "border-[#362F1C] hover:border-yellow-400"
-                          }`}
+                          className={`w-full px-2 font-[poppins] py-3 text-lg rounded-lg bg-gradient-to-r from-yellow-500/10 to-yellow-600/10 text-[#362F1C] border-2 transition-all duration-300 focus:outline-none focus:ring-2 file:mr-4 file:py-2 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-gradient-to-r file:from-[#FFD700] file:to-[#FFA500] file:text-[#362F1C] hover:file:shadow-2xs file:transition-all file:duration-300 hover:file:scale-105 `}
                         />
                       </div>
                     </div>
@@ -394,22 +372,18 @@ function Registration() {
                 }`}
               >
                 <div className="relative group">
-                  <div className={`absolute -inset-1 bg-gradient-to-r from-red-600 via-red-700 to-red-800 rounded-xl blur opacity-75 transition-all duration-500 ${
-                    buttonHovered ? "opacity-100 scale-110" : "opacity-75"
-                  }`}></div>
+                  <div className={`absolute -inset-1 border-2 border-amber-300  bg-red-700 rounded-xl  opacity-75 transition-all duration-500`}></div>
                   <button
                     type="submit"
                     disabled={isUploading}
                     onMouseEnter={() => setButtonHovered(true)}
                     onMouseLeave={() => setButtonHovered(false)}
-                    className={`relative w-full font-[poppins] py-4 bg-gradient-to-r from-red-700 to-red-900 text-white text-xl font-bold rounded-xl border-2 border-yellow-500 shadow-2xl transition-all duration-300 hover:shadow-yellow-500/50 disabled:opacity-50 disabled:cursor-not-allowed transform ${
-                      buttonHovered && !isUploading ? "scale-105 hover:from-red-800 hover:to-red-950" : ""
-                    }`}
+                    className={`relative w-full font-[poppins] py-4  text-white text-xl font-bold rounded-xl shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform`}
                   >
                     <span className="relative z-10 flex items-center justify-center space-x-2">
                       <span>
                         {step === 0
-                          ? "🚀 Add First Crew Member"
+                          ? " Add First Crew Member"
                           : step < 5
                           ? `⚡ Add Member ${step + 1}`
                           : "🏆 Submit Complete Crew"}
@@ -422,9 +396,7 @@ function Registration() {
                         </span>
                       )}
                     </span>
-                    {buttonHovered && !isUploading && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#FFD700]/10 to-[#FF4500]/10 rounded-xl transition-opacity duration-300" />
-                    )}
+                   
                   </button>
                 </div>
               </div>

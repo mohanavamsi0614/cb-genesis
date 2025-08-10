@@ -8,16 +8,16 @@ import one from "../assets/one.jpg";
 import title from "../assets/title.png";
 import oda from "../assets/oda.png";
 import loadingImg1 from "../assets/loading.gif";
-import loadingImg2 from "../assets/load2.gif";
-import loadingImg3 from "../assets/load3.gif";
-import loadingImg4 from "../assets/load4.gif";
-import loadingImg5 from "../assets/load5.gif";
-import loadingImg6 from "../assets/load6.jpg";
-import loadingImg7 from "../assets/load7.gif";
-import loadingImg8 from "../assets/load8.gif";
-import loadingImg9 from "../assets/load9.gif";
-import loadingImg10 from "../assets/load10.gif";
-import loadingImg11 from "../assets/load11.gif";
+// import loadingImg2 from "../assets/load2.gif";
+// import loadingImg3 from "../assets/load3.gif";
+// import loadingImg4 from "../assets/load4.gif";
+// import loadingImg5 from "../assets/load5.gif";
+// import loadingImg6 from "../assets/load6.jpg";
+// import loadingImg7 from "../assets/load7.gif";
+// import loadingImg8 from "../assets/load8.gif";
+// import loadingImg9 from "../assets/load9.gif";
+// import loadingImg10 from "../assets/load10.gif";
+// import loadingImg11 from "../assets/load11.gif";
 
 function LandingPage() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -27,16 +27,16 @@ function LandingPage() {
   useEffect(() => {
     const loaderImages = [
       loadingImg1,
-      loadingImg2,
-      loadingImg3,
-      loadingImg4,
-      loadingImg5,
-      loadingImg6,
-      loadingImg7,
-      loadingImg8,
-      loadingImg9,
-      loadingImg10,
-      loadingImg11
+      // loadingImg2
+      // loadingImg3,
+      // loadingImg4,
+      // loadingImg5,
+      // loadingImg6,
+      // loadingImg7,
+      // loadingImg8,
+      // loadingImg9,
+      // loadingImg10,
+      // loadingImg11
     ];
 
     const randomIndex = Math.floor(Math.random() * loaderImages.length);
@@ -210,7 +210,7 @@ function LandingPage() {
                 key={i}
                 className="bg-[#0d1628]/60 backdrop-blur-sm rounded-md p-3 sm:p-4 border border-[#FFD700]/30 shadow-md w-[120px] sm:w-[140px] text-center"
                 >
-                  <div className="text-lg sm:text-xl font-bold text-[#FFD700]">{stat.value}</div>
+                  <div className="text-lg sm:text-xl font-bold text-[#FFFFFF]">{stat.value}</div>
                   <div className="text-white/60 text-xs sm:text-sm">{stat.label}</div>
                   </div>
                   ))}
@@ -220,10 +220,10 @@ function LandingPage() {
                 <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center mb-6 transition-all duration-1000 delay-1400 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
                   <div onClick={() => console.log('Register clicked')} className="w-full sm:w-auto cursor-pointer">
                     <Link to="/register">
-                      <button className="group relative px-10 py-5 bg-gradient-to-r from-[#b71c1c] to-[#d32f2f] text-white font-bold text-xl sm:text-2xl rounded-full border-2 border-[#FFD700] shadow-lg hover:shadow-[#FFD700]/30 transition-all duration-300 hover:scale-105 hover:from-[#c62828] hover:to-[#e53935] w-full sm:w-auto">
+                      <button className="group relative px-10 py-5 bg-gradient-to-r from-[#b71c1c] to-[#d32f2f] text-white font-bold text-xl sm:text-2xl rounded-full border-2 border-[#FFD700] shadow-lg w-full sm:w-auto">
                         <span className="relative z-10 flex justify-center items-center gap-3 w-full cursor-pointer">
-                          ⚓ REGISTER NOW
-                          <span className="group-hover:translate-x-1 transition-transform text-2xl">→</span>
+                          REGISTER NOW
+                          {/* <span className="group-hover:translate-x-1 transition-transform text-2xl">→</span> */}
                         </span>
                         <div className="absolute inset-0 bg-gradient-to-r from-[#FFD700]/20 to-[#FF4500]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                       </button>
@@ -234,8 +234,8 @@ function LandingPage() {
 
                 {/* Timer */}
                 <div className={`transition-all duration-1000 delay-1600 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}>
-                  <div className="text-[#362F1C] text-xl sm:text-2xl mb-2">⏰ Registration Ends In:</div>
-                  <div className="flex justify-center gap-2 text-[#FFD700] font-mono text-lg sm:text-xl">
+                  <div className="text-[#362F1C] text-xl sm:text-2xl mb-2">Registration Ends In:</div>
+                  <div className="flex justify-center gap-2 text-[#FFFFFF] font-mono text-lg sm:text-xl">
                     <span className="bg-black/30 px-2 sm:px-3 py-1 rounded text-sm sm:text-xl">15</span>
                     <span>:</span>
                     <span className="bg-black/30 px-2 sm:px-3 py-1 rounded text-sm sm:text-xl">23</span>
@@ -259,7 +259,7 @@ function LandingPage() {
 
           {/* About the Event Section */}
           <div 
-            className={`bg-gradient-to-br from-[#1b2a49]/70 to-[#13233f]/80 backdrop-blur-xl rounded-2xl border-2 border-[#362F1C]/40 shadow-[0_0_40px_rgba(255,215,0,0.15)] p-6 sm:p-8 transition-all duration-1500 delay-500 ${
+            className={`bg-gradient-to-br from-[#0b3075] to-[#dfc48f] backdrop-blur-xl rounded-2xl border-2 border-[#fefefe]/40 shadow-[0_0_40px_rgba(255,215,0,0.15)] p-6 sm:p-8 transition-all duration-1500 delay-500 ${
               isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
             }`}
           >
@@ -287,7 +287,7 @@ function LandingPage() {
 
           {/* Event Structure Section */}
           <div 
-            className={`bg-gradient-to-br from-[#1b2a49]/70 to-[#13233f]/80 backdrop-blur-xl rounded-2xl border-2 border-[#362F1C]/40 shadow-[0_0_40px_rgba(255,215,0,0.15)] p-6 sm:p-8 transition-all duration-1500 delay-700 ${
+            className={`bg-gradient-to-br from-[#0b3075] to-[#dfc48f] backdrop-blur-xl rounded-2xl border-2 border-[#362F1C]/40 shadow-[0_0_40px_rgba(255,215,0,0.15)] p-6 sm:p-8 transition-all duration-1500 delay-700 ${
               isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
             }`}
           >
@@ -302,7 +302,7 @@ function LandingPage() {
                 "Participants will present their projects to a panel of judges",
                 "The top winners will be announced and awarded prizes"
               ].map((step, i) => (
-                <div key={i} className="bg-[#0d1628]/60 backdrop-blur-sm rounded-lg p-4 sm:p-6 border border-[#FFD700]/20 hover:border-[#FFD700]/40 transition-colors">
+                <div key={i} className="bg-[#0d1628]/60 backdrop-blur-sm rounded-lg p-4 sm:p-6 border border-[#FFD700]/20  transition-colors">
                   <div className="flex items-start gap-4 cursor-pointer">
                     <div className="bg-[#FFD700] text-black font-bold rounded-full w-8 h-8 flex items-center justify-center text-sm flex-shrink-0">
                       {i + 1}
@@ -316,7 +316,7 @@ function LandingPage() {
 
           {/* Prizes & Rewards Section */}
           <div 
-            className={`bg-gradient-to-br from-[#1b2a49]/70 to-[#13233f]/80 backdrop-blur-xl rounded-2xl border-2 border-[#362F1C]/40 shadow-[0_0_40px_rgba(255,215,0,0.15)] p-6 sm:p-8 transition-all duration-1500 delay-900 ${
+            className={`bg-gradient-to-br from-[#0b3075] to-[#dfc48f] backdrop-blur-xl rounded-2xl border-2 border-[#362F1C]/40 shadow-[0_0_40px_rgba(255,215,0,0.15)] p-6 sm:p-8 transition-all duration-1500 delay-900 ${
               isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
             }`}
           >
