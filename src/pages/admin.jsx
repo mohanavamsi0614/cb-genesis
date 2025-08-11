@@ -19,7 +19,7 @@ function Admin(){
                             placeholder="Enter password"  
                             onChange={(e)=>setpass(e.target.value)} 
                             className="w-full p-3 mb-4 rounded-lg border-2 border-[#FFD700]/40 bg-[#13233f] text-white focus:outline-none focus:border-[#FFD700] transition-all"/>
-                        <button 
+                        <button
                             onClick={()=>{if(pass=="cbkluit"){setauth(true)}}} 
                             className="w-full bg-gradient-to-r from-[#FFD700] to-[#FFB300] text-[#0a0f2c] font-bold py-2.5 rounded-lg shadow-lg hover:scale-105 transition-all">
                             Login
