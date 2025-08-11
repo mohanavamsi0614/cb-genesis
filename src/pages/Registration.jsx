@@ -436,7 +436,7 @@ function Registration() {
                     {/* Email */}
                     <div className="pb-2 sm:pb-4">
                       <label className="block font-[poppins] text-[#362F1C] text-lg sm:text-xl mb-2 sm:mb-3 font-bold tracking-wide">
-                        EMAIL *
+                        College EMAIL (klu.ac.in) *
                       </label>
                       <div className="relative group">
                         <input

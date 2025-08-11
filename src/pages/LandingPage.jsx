@@ -356,8 +356,8 @@ function LandingPage() {
                       </Link>
                     ) : (
                       <div className="flex flex-col items-center">
-                        <span className="text-2xl sm:text-3xl font-serif  text-white mb-2">Registration opens at 6:00 PM</span>
-                        <span className="text-2xl font-serif  sm:text-2xl text-white bg-[#0d1628]/60 px-6 py-2 rounded-full border border-[#FFD700]/30 shadow-md">Countdown: {formatCountdown(countdown)}</span>
+                        <span className="text-2xl font-[poppins] sm:text-2xl   text-[#362f1c] mb-2">Registration opens at 6:00 PM</span>
+                        <span className="text-xl font-[poppins] sm:text-2xl text-white bg-[#0d1628]/60 px-6 py-2 rounded-full border border-[#FFD700]/30 shadow-md">Countdown: {formatCountdown(countdown)}</span>
                       </div>
                     )}
                   </motion.div>
@@ -390,7 +390,7 @@ function LandingPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
               >
-                🏴‍☠️ About the Event
+                 About the Event
               </motion.h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[
@@ -425,7 +425,7 @@ function LandingPage() {
                       >
                         {i + 1}.
                       </motion.span>
-                      <p className="text-white text-sm sm:text-base leading-relaxed font-[pirates]">{item}</p>
+                      <p className="text-white font-[poppins] text-sm sm:text-base leading-relaxed">{item}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -446,7 +446,7 @@ function LandingPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                ⚡ Event Structure
+                Event Structure
               </motion.h2>
               <div className="space-y-4">
                 {[
@@ -501,7 +501,7 @@ function LandingPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 1, type: "spring", bounce: 0.6 }}
               >
-                💰 Prizes & Rewards
+                Prizes & Rewards
               </h2>
               <motion.p 
                 className="text-white text-center text-base sm:text-lg mb-8 font-[poppins]"
@@ -513,7 +513,7 @@ function LandingPage() {
                 We value innovation and hard work. The top winners will receive cash prizes along with additional credits, and all participants will get certificates of participation.
               </motion.p>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid font-[poppins] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
                   { emoji: "🏆", title: "1st Prize", prize: "₹7000 + 2 credits", gradient: "from-yellow-500 to-yellow-600" },
                   { emoji: "🥈", title: "2nd Prize", prize: "₹5000 + 2 credits", gradient: "from-gray-400 to-gray-500" },
