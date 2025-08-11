@@ -189,7 +189,7 @@ function Payment() {
                     else if (qr === qr2) {
                       setqr(qr1)
                     }
-                  }} className="mt-3 px-4 py-2 text-sm font-semibold text-white bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg transition-all duration-300">Try Another QR</button>
+                  }} className="mt-3 px-4 py-2 text-sm font-semibold text-white bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg transition-all ml-2 duration-300">Try Another QR</button>
                 </div>
                 <br/>
 

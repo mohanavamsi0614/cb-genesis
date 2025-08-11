@@ -10,10 +10,10 @@ const router = createBrowserRouter([
         path:'/',
         element:<LandingPage/>,
     },
-    // {
-    //     path:'/register',
-    //     element:<Registration/>,
-    // },
+    {
+        path:'/register',
+        element:<Registration/>,
+    },
     {
         path:'/payment',
         element:<Payment/>,
