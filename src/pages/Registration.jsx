@@ -442,13 +442,16 @@ function Registration() {
                         <input
                           type="email"
                           value={currentMember?.email || ""}
-                          onChange={(e) => handleMemberChange("email", e.target.value)}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            handleMemberChange("email", val);
+                          }}
                           placeholder="Enter the pirate's email..."
                           onFocus={() => setFocusedInput("email")}
                           onBlur={() => setFocusedInput("")}
                           onMouseEnter={() => setHoveredInput("email")}
                           onMouseLeave={() => setHoveredInput("")}
-                          className="w-full font-[poppins] px-2 py-2 sm:py-3 text-base sm:text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 border-[#362F1C]/40 transition-all duration-300 focus:outline-none focus:ring-0 focus:border-[#FFD700] placeholder:text-[#362F1C]/60"
+                          className={`w-full font-[poppins] px-2 py-2 sm:py-3 text-base sm:text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 transition-all duration-300 focus:outline-none focus:ring-0 focus:border-[#FFD700] placeholder:text-[#362F1C]/60 `}
                           required
                         />
                       </div>
