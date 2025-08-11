@@ -18,9 +18,9 @@ const router = createBrowserRouter([
         path:'/payment',
         element:<Payment/>,
     },
-    // {path:'/admin',
-    //     element:<Admin/>
-    // }
+    {path:'/admin',
+        element:<Admin/>
+    }
 ])
 
 export default router;
