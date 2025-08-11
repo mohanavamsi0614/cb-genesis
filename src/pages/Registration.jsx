@@ -518,7 +518,7 @@ function Registration() {
                     {currentMember?.accommodationType && currentMember?.accommodationType === "hosteler" && (
                       <div className="pb-2 sm:pb-4">
                         <label className="block font-[poppins] text-[#362F1C] text-lg sm:text-xl mb-2 sm:mb-3 font-bold tracking-wide">
-                           ROOM NUMBER (OPTIONAL)
+                           ROOM NUMBER
                         </label>
                         <div className="relative group">
                           <input
@@ -532,6 +532,7 @@ function Registration() {
                             onMouseLeave={() => setHoveredInput("")}
                             className="w-full font-[poppins] px-2 py-2 sm:py-3 text-base sm:text-lg rounded-none bg-transparent text-[#362F1C] border-0 border-b-2 border-[#362F1C]/40 transition-all duration-300 focus:outline-none focus:ring-0 focus:border-[#FFD700] placeholder:text-[#362F1C]/60"
                             disabled={currentMember?.accommodationType === "dayscholar"}
+                            required={currentMember?.accommodationType === "hosteler" ? true : false}
                           />
                         </div>
                       </div>
