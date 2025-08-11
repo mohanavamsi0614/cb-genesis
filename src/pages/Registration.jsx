@@ -457,7 +457,7 @@ function Registration() {
                     {/* Accommodation Type */}
                     <div className="pb-2 sm:pb-4">
                       <label className="block font-[poppins] text-[#362F1C] text-lg sm:text-xl mb-2 sm:mb-3 font-bold tracking-wide">
-                        ACCOMMODATION TYPE *
+                         Day Scholar/Hosteler TYPE *
                       </label>
                       <div className="grid grid-cols-2 gap-3 sm:gap-4">
                         <button
