@@ -50,10 +50,10 @@ function PaymentCard({ team }) {
     <div className="mt-6 p-4 sm:p-6 bg-white rounded-lg shadow-lg flex flex-col md:flex-row justify-between items-start md:space-x-6 hover:shadow-2xl transition-shadow duration-300">
       <div className="w-full md:w-2/3">
         <h3 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">
-          {team.teamname || "Team Name"}
+          {team.teamName || "Team Name"}
         </h3>
         <div className="space-y-1">
-          <h3 className="text-sm sm:text-base">transtationId: {team.transtationId}</h3>
+          <h3 className="text-sm sm:text-base">transtationId: {team.transactionId}</h3>
           <h3 className="text-sm sm:text-base">upiId: {team.upiId}</h3>
         </div>
 
@@ -65,7 +65,7 @@ function PaymentCard({ team }) {
               Team Members:
             </h3>
             <div className="space-y-1">
-              {team.teamMembers.map((member) => (
+              {team.members.map((member) => (
                 <h3 key={member.name} className="text-gray-600 text-sm sm:text-base">
                   {member.name}
                 </h3>

@@ -1,9 +1,14 @@
 import { useState, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import bgImg from "../assets/bg.jpg";
 import one from "../assets/one.jpg";
 import { io } from "socket.io-client";
 import axios from "axios";
+import Modal from "../Model";
+import loadingGif from "../assets/loading.gif";
+import doneImg from "/public/1cbd3594bb5e8d90924a105d4aae924c.gif";
+import qr1 from "/public/qr1.jpg"
+import qr2 from "/public/qr2.jpg"
 
 const socket=io("https://cb-kare-server.onrender.com")
 function Payment() {
@@ -12,12 +17,14 @@ function Payment() {
   const { registrationData } = location.state || {};
   const wid = useRef();
   const [imgUrl, setImgUrl] = useState("");
+  const [qr,setqr]=useState(qr1)
   const [isLoaded, setIsLoaded] = useState(false);
   const [tran,settran]=useState("")
   const [upiid,setupiid]=useState("")
   const [done,setDone]=useState(false);
-
-  
+  const [isDone, setIsDone] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const totalAmount = registrationData ? registrationData.members.length * 350 + 350 : 0;
 
@@ -71,10 +78,18 @@ function Payment() {
   }
 
    function handlesubmit(){
+    setLoading(true);
     const teamdata=JSON.parse(localStorage.getItem("teamRegistrations"))
     const data={...teamdata,transactionId:tran,imgUrl:imgUrl,upiId:upiid}
-    axios.post("https://cb-kare-server.onrender.com/event/gen/register",data).then((res)=>{console.log(res)})
-
+    axios.post("https://cb-kare-server.onrender.com/event/gen/register",data).then((res)=>{
+      console.log(res)
+      setIsDone(true)
+    }).catch((err)=>{
+      console.log(err)
+      setError("Registration failed. Please try again.")
+    }).finally(() => {
+      setLoading(false);
+    });
     }
   
   return (
@@ -151,23 +166,30 @@ function Payment() {
 
                   <div className="p-3 rounded-xl bg-white shadow-inner border-4 border-yellow-500 hover:scale-105 transition-transform duration-300">
                     <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/8/89/UPI-QR-Code-Example.svg"
+                      src={qr}
                       alt="QR Code"
                       className="w-44 mx-auto rounded-lg"
                     />
                   </div>
 
-                  <p className="mt-3 text-sm text-red-600 font-semibold">⚠ Use Only GPay</p>
 
-                  <button className="mt-3 px-4 py-2 text-sm font-semibold text-white bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg transition-all duration-300">
+                  <a href={qr} download><button className="mt-3 px-4 py-2 text-sm font-semibold text-white bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg transition-all duration-300">
                     📥 Download QR
-                  </button>
+                  </button></a>
+                  <button onClick={()=>{
+                    if (qr === qr1) {
+                      setqr(qr2)
+                    }
+                    else if (qr === qr2) {
+                      setqr(qr1)
+                    }
+                  }} className="mt-3 px-4 py-2 text-sm font-semibold text-white bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg transition-all duration-300">Try Another QR</button>
                 </div>
                 <br/>
 
                 {/* Payment Form */}
                   <div>
-                    <label className="block text-sm font-medium">
+                    <label className="block text-xl font-medium">
                       Your UPI ID: <span className="text-red-600">*</span>
                     </label>
                     <input
@@ -181,7 +203,7 @@ function Payment() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium">
+                    <label className="block text-xl">
                       Transaction Number: <span className="text-red-600">*</span>
                     </label>
                     <input
@@ -196,7 +218,7 @@ function Payment() {
 
                   {/* File Upload with Preview */}
                   <div className="pt-4">
-                    <label className="block text-sm font-semibold text-[#362F1C] mb-1">
+                    <label className="block text-xl font-semibold text-[#362F1C] mb-1">
                       TRANSACTION SCREENSHOT: <span className="text-red-600">*</span>
                     </label>
                     <div className=" w-full flex justify-center">
@@ -239,6 +261,40 @@ function Payment() {
           </div>
         </div>
       </div>
+      {(loading || isDone || error) && (
+        <Modal isLoading={loading}>
+          {loading && (
+            <div className="flex flex-col items-center justify-center py-8">
+              <img src={loadingGif} alt="Loading..." className="w-24 h-24 mb-4 animate-spin" />
+              <p className="text-xl font-bold text-yellow-700">Processing Payment...</p>
+            </div>
+          )}
+          {isDone && (
+            <div className="modal-content flex flex-col items-center justify-center py-8">
+              <img src={doneImg} alt="Success" className="w-24 h-24 mb-4" />
+              <p className="text-xl font-bold text-green-700">Registration successful!</p>
+              <p className="font-mono w-full text-center mb-2">
+                Please check your inbox for the confirmation mail.<br />Thank you!
+              </p>
+              <Link to="/">
+                <button className="bg-[#E16254] w-24 p-4 text-white rounded mt-5">Home</button>
+              </Link>
+            </div>
+          )}
+          {error && (
+            <div className="modal-content flex flex-col items-center justify-center py-8">
+              <p className="text-xl font-bold text-red-500 mb-2">Error</p>
+              <p className="w-full font-serif text-center mb-2">Registration failed. Please Contact <b>6281605767</b>.</p>
+              <button
+                onClick={() => setError("")}
+                className="bg-[#E16254] w-24 p-4 text-white rounded mt-5"
+              >
+                Close
+              </button>
+            </div>
+          )}
+        </Modal>
+      )}
     </div>
   );
 }

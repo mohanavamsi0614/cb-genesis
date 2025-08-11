@@ -315,7 +315,7 @@ function Registration() {
                 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#362F1C] via-[#4A3F2A] to-[#362F1C] bg-clip-text text-center drop-shadow-lg"
                 style={{ textShadow: '2px 2px 4px rgba(54, 47, 28, 0.3)' }}
               >
-                {step === 0 ? "⚔️ Team Registration ⚔️" : `🏴‍☠️ Member ${step} Details 🏴‍☠️`}
+                {step === 0 ? "⚔️ Team Registration ⚔️" : ` Member ${step} Details `}
               </h1>
               <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 sm:w-32 h-1 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent rounded-full"></div>
             </div>
