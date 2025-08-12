@@ -60,7 +60,7 @@ function PaymentCard({ team }) {
         {full && (
           <div className="mb-4 mt-4">
             <h3 className="font-bold text-black text-base sm:text-lg">Team Lead:</h3>
-            <h3 className="text-gray-700 text-sm sm:text-base">{team.name}</h3>
+            <h3 className="text-gray-700 text-sm sm:text-base">{team.lead.name}</h3>
             <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-2 mt-2">
               Team Members:
             </h3>
