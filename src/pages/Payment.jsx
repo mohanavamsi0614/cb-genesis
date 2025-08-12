@@ -7,8 +7,8 @@ import axios from "axios";
 import Modal from "../Model";
 import loadingGif from "../assets/loading.gif";
 import doneImg from "/public/1cbd3594bb5e8d90924a105d4aae924c.gif";
-import qr1 from "/public/qr1.jpg"
-import qr2 from "/public/qr2.jpg"
+import qr1 from "/public/qr3.jpg"
+import qr2 from "/public/qr4.jpg"
 import { u } from "framer-motion/client";
 
 const socket=io("https://cb-kare-server.onrender.com")
