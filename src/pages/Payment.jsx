@@ -72,8 +72,9 @@ function Payment() {
 
     if (done){
     return (
-      <div className=" bg-black flex justify-center items-center min-h-screen text-white p-4">
-        Sorry registration are completed the slots are filled 😓 we hope you will understand 🥺 thanks a lot for your intrest we will get back to you with an update.If your payment was done Please contact this number <b className=" text-red-400">6281605767</b>
+      <div className=" bg-black font-sans flex justify-center items-center min-h-screen text-white p-4">
+       <p className=" text-xl"> Sorry registration are completed the slots are filled 😓 we hope you will understand 🥺 thanks a lot for your intrest we will get back to you with an update.If your payment was done Please contact this number.  
+        <b className=" text-red-400">  6281605767</b> and Fill this form <a href="https://forms.gle/yNvT6nujeeWivioAA" className="text-purple-400 font-bold">Fill</a></p>
       </div>
     )
   }

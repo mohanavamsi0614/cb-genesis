@@ -106,7 +106,7 @@ function Registration() {
     if (step < 5) {
       if (step > 0) {
         const currentMember = members[step - 1];
-        if (currentMember.name && currentMember.email && currentMember.accommodationType) {
+        if (currentMember.name && currentMember.email.slice(6, 7) === "8" && currentMember.accommodationType) {
           // Check if hosteler is selected but no hostel name is provided
           if (currentMember.accommodationType === "hosteler" && !currentMember.hostelName) {
             toast.error("Please select a hostel name", {
@@ -131,7 +131,7 @@ function Registration() {
             },
           });
         } else {
-          toast.error("Please fill in all required fields", {
+          toast.error("Please fill in all required fields and Only IT", {
             duration: 3000,
             position: 'top-center',
             style: {
@@ -176,7 +176,18 @@ function Registration() {
         (member.accommodationType === "dayscholar" || 
          (member.accommodationType === "hosteler" && member.hostelName))
       );
-      
+      const allIT = validMembers.every(member => member.email.slice(6, 7) === "8");
+      if (!allIT) {
+        toast.error("All team members must be from IT department ONLY!", {
+          duration: 4000,
+          position: 'top-center',
+          style: {
+            background: '#dc2626',
+            color: 'white',
+            fontWeight: 'bold',
+          },
+        });
+      }
       if (validMembers.length === 0) {
         toast.error("Please add at least one team member with complete details", {
           duration: 4000,
