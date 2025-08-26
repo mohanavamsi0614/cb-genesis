@@ -3,6 +3,7 @@ import LandingPage from "../pages/LandingPage";
 import Registration from "../pages/Registration";
 import Payment from "../pages/Payment";
 import Admin from "../pages/admin";
+import Teampanel from "../pages/Teampanel";
 
 
 const router = createBrowserRouter([
@@ -20,6 +21,9 @@ const router = createBrowserRouter([
     },
     {path:'/admin',
         element:<Admin/>
+    },
+    {path:'/teampanel',
+        element:<Teampanel/>
     }
 ])
 

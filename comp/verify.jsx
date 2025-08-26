@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
+import { api } from "../src/api";
 
 function PaymentCard({ team }) {
   const [photo, setPhoto] = useState(false);
@@ -35,7 +36,7 @@ function PaymentCard({ team }) {
   async function handleVerify(id) {
     try {
       setLoading(true);
-      const response = await axios.get(`https://cb-kare-server.onrender.com/event/team/${id}`);
+      const response = await axios.get(`${api}/event/team/${id}`);
       console.log(response.data);
       setVerified(true);
     } catch (err) {
@@ -61,13 +62,14 @@ function PaymentCard({ team }) {
           <div className="mb-4 mt-4">
             <h3 className="font-bold text-black text-base sm:text-lg">Team Lead:</h3>
             <h3 className="text-gray-700 text-sm sm:text-base">{team.lead.name}</h3>
+            <h3>{team.lead.email}</h3>
             <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-2 mt-2">
               Team Members:
             </h3>
             <div className="space-y-1">
               {team.members.map((member) => (
                 <h3 key={member.name} className="text-gray-600 text-sm sm:text-base">
-                  {member.name}
+                  {member.name}   -    {member.email}
                 </h3>
               ))}
             </div>

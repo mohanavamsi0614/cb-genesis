@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import PaymentCard from "../../comp/verify";
-
+import { api } from "../api";
 function Admin(){
     const [teams,setteams]=useState([])
     const [auth,setauth]=useState(false)
     const [pass,setpass]=useState("")
     useEffect(()=>{
-        axios.get("https://cb-kare-server.onrender.com/event/teams").then((res)=>{setteams(res.data)})
+        axios.get(`${api}/event/teams`).then((res)=>{setteams(res.data)})
     },[])
         if (!auth){
             return(
@@ -42,25 +42,6 @@ function Admin(){
             </div>
         </div>
     )
-        return(
-            <div className="w-full min-h-screen bg-gradient-to-b font-sans from-[#0a0f2c] via-[#13233f] to-[#0a0f2c] flex flex-col items-center py-8 px-4">
-                <div className="w-full max-w-5xl mx-auto">
-                    <h1 className="text-4xl sm:text-5xl font-bold text-[#FFD700] mb-8 text-center drop-shadow-lg tracking-wide">Welcome to Genesis Admin Portal</h1>
-                    <div className="flex items-center justify-between mb-6">
-                        <span className="text-white text-xl sm:text-2xl font-semibold">Total Teams: <span className="text-[#FFD700]">{teams.length}</span></span>
-                        <span className="text-white text-lg">{new Date().toLocaleString()}</span>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full">
-                        {teams.map((team,index)=>{
-                            return(
-                                <div className="transition-transform duration-300 hover:scale-105">
-                                    <PaymentCard key={index} team={team}/>
-                                </div>
-                            )
-                        })}
-                    </div>
-                </div>
-            </div>
-        )
+
 }
 export default Admin;

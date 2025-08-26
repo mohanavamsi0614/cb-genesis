@@ -9,9 +9,9 @@ import loadingGif from "../assets/loading.gif";
 import doneImg from "/public/1cbd3594bb5e8d90924a105d4aae924c.gif";
 import qr1 from "/public/qr3.jpg"
 import qr2 from "/public/qr4.jpg"
-import { u } from "framer-motion/client";
+import { api } from "../api";
 
-const socket=io("https://cb-kare-server.onrender.com")
+const socket=io(api)
 function Payment() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -83,8 +83,8 @@ function Payment() {
     if (upiid,tran,imgUrl){
     setLoading(true);
     const teamdata=JSON.parse(localStorage.getItem("teamRegistrations"))
-    const data={...teamdata,transactionId:tran,imgUrl:imgUrl,upiId:upiid}
-    axios.post("https://cb-kare-server.onrender.com/event/gen/register",data).then((res)=>{
+      const data={...teamdata,transactionId:tran,imgUrl:imgUrl,upiId:upiid}
+      axios.post(`${api}/event/gen/register`,data).then((res)=>{
       console.log(res)
       setIsDone(true)
     }).catch((err)=>{
