@@ -63,17 +63,29 @@ function Teampanel() {
   return (
     <div className="flex h-screen bg-gradient-to-br from-[#0a0f2c] via-[#13233f] to-[#0a0f2c] text-white">
       {/* Sidebar */}
-      <div className="w-64 bg-black/70 p-6 border-r border-yellow-500/30 flex flex-col justify-between">
+      <div className="w-72 bg-black/80 p-8 border-r-2 border-yellow-500/30 flex flex-col justify-between shadow-2xl rounded-r-3xl">
         <div>
-          <h1 className="text-3xl font-pirates text-yellow-400 mb-8">Crew Dashboard</h1>
-          <nav className="space-y-4">
-            <a href="#team" className="block hover:text-yellow-400">👥 Team</a>
-            <a href="#attendance" className="block hover:text-yellow-400">📋 Attendance</a>
-            <a href="#leaderboard" className="block hover:text-yellow-400">🏆 Leaderboard</a>
-            <a href="#problem" className="block hover:text-yellow-400">📜 Problem</a>
+          <div className="flex flex-col items-center mb-6">
+            <img src="/src/assets/klulogo.png" className="w-20 h-20 rounded-full border-4 border-yellow-400 shadow-lg mb-2" alt="KARE Logo" />
+            <img src="/src/assets/title.png" className="w-40 h-14 object-contain" alt="Title" />
+          </div>
+          <h1 className="text-3xl font-pirates text-yellow-400 mb-8 text-center drop-shadow-lg tracking-wide">Crew Dashboard</h1>
+          <nav className="space-y-6">
+            <a href="#team" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black/40 hover:bg-yellow-400 hover:text-black transition-all">
+              <img src="./team.png" className="w-8 h-6" alt="Team" /> <span className="font-bold">Team</span>
+            </a>
+            <a href="#attendance" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black/40 hover:bg-yellow-400 hover:text-black transition-all">
+              <img src="./attd.png" className="w-6 h-6" alt="Attendance" /> <span className="font-bold">Attendance</span>
+            </a>
+            <a href="#leaderboard" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black/40 hover:bg-yellow-400 hover:text-black transition-all">
+              <span className="text-2xl">🏆</span> <span className="font-bold">Leaderboard</span>
+            </a>
+            <a href="#problem" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black/40 hover:bg-yellow-400 hover:text-black transition-all">
+              <span className="text-2xl">📜</span> <span className="font-bold">Problem</span>
+            </a>
           </nav>
         </div>
-        <button onClick={() => { sessionStorage.clear(); window.location.reload(); }} className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700">
+        <button onClick={() => { sessionStorage.clear(); window.location.reload(); }} className="bg-gradient-to-r from-red-600 to-yellow-400 text-black font-bold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition-all mt-8">
           Logout
         </button>
       </div>
@@ -91,7 +103,7 @@ function Teampanel() {
     
 
         <motion.div id="team" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-black/40 rounded-2xl p-6 border border-yellow-500/20">
-          <h2 className="text-xl font-bold mb-4">👥 Team Members</h2>
+          <h2 className="text-xl font-bold mb-4"><img src="./team.png" className="w-8 h-8 inline" alt="Team" /> Team Members</h2>
           <div className="grid md:grid-cols-2 gap-4">
             <MemberCard member={team.lead} role="Lead" />
             {team.members.map((m, idx) => <MemberCard key={idx} member={m} />)}
@@ -100,7 +112,7 @@ function Teampanel() {
 
         {/* Attendance */}
         <motion.div id="attendance" className="bg-black/40 rounded-2xl p-6 border border-yellow-500/20">
-          <h2 className="text-xl font-bold mb-4">📋 Attendance</h2>
+          <h2 className="text-xl font-bold mb-4"><img src="./attd.png" className="w-8 h-8 inline" alt="Attendance" /> Attendance</h2>
           <AttendanceTable team={team} currAttd={currAttd} setOpen={setOpen} setNow={setNow} />
         </motion.div>
 
