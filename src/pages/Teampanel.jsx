@@ -66,8 +66,8 @@ function Teampanel() {
       <div className="w-72 bg-black/80 p-8 border-r-2 border-yellow-500/30 flex flex-col justify-between shadow-2xl rounded-r-3xl">
         <div>
           <div className="flex flex-col items-center mb-6">
-            <img src="/src/assets/klulogo.png" className="w-20 h-20 rounded-full border-4 border-yellow-400 shadow-lg mb-2" alt="KARE Logo" />
-            <img src="/src/assets/title.png" className="w-40 h-14 object-contain" alt="Title" />
+            <img src="./KARE(latest).png" className="w-20 h-20 rounded-full border-4 border-yellow-400 shadow-lg mb-2" alt="KARE Logo" />
+            <img src="./title.png" className="w-40 h-14 object-contain" alt="Title" />
           </div>
           <h1 className="text-3xl font-pirates text-yellow-400 mb-8 text-center drop-shadow-lg tracking-wide">Crew Dashboard</h1>
           <nav className="space-y-6">
@@ -238,7 +238,7 @@ function LoginPage({ pass, setPass, check }) {
 function LoadingPage() {
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center bg-black">
-      <img src="/src/assets/loading.gif" alt="Loading" className="w-24 h-24 mb-6 animate-spin" />
+      <img src="./loading.gif" alt="Loading" className="w-24 h-24 mb-6 animate-spin" />
       <h1 className="text-2xl text-yellow-400 font-bold">Loading...</h1>
     </div>
   );
