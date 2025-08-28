@@ -6,6 +6,10 @@ import Webcam from "react-webcam";
 import { io } from "socket.io-client";
 import { motion } from "framer-motion";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import member from "../assets/members.png"
+import atte from "../assets/atten.png"
+import prob from "../assets/probl.png"
+import lead from "../assets/leader.png"
 
 const socket = io(api);
 
@@ -22,8 +26,6 @@ function Teampanel() {
     // Group photo state
   const [groupPhoto, setGroupPhoto] = useState("");
   const groupWebcamRef = useRef(null);
-
-
 
   useEffect(() => {
     Promise.all([check(), getLeaderboard()]).finally(() => setLoading(false));
@@ -69,7 +71,7 @@ function Teampanel() {
             <img src="./KARE(latest).png" className="w-20 h-20 rounded-full border-4 border-yellow-400 shadow-lg mb-2" alt="KARE Logo" />
             <img src="./title.png" className="w-40 h-14 object-contain" alt="Title" />
           </div>
-          <h1 className="text-3xl font-pirates text-yellow-400 mb-8 text-center drop-shadow-lg tracking-wide">Crew Dashboard</h1>
+          <h1 className="text-3xl text-yellow-400 mb-8 text-center drop-shadow-lg tracking-wide">Crew Dashboard</h1>
           <nav className="space-y-6">
             <a href="#team" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black/40 hover:bg-yellow-400 hover:text-black transition-all">
               <img src="./team.png" className="w-8 h-6" alt="Team" /> <span className="font-bold">Team</span>
@@ -91,19 +93,19 @@ function Teampanel() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-8">
+      <div className="flex-1 bg-[url('./assets/latest.png')] bg-[#fff6d1]/80 overflow-y-auto p-6 space-y-8">
         {/* Header */}
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">{team.teamName}</h1>
-          <span className="bg-yellow-400 text-black px-4 py-2 rounded-full">
+          <h1 className="text-4xl text-black font-bold">{team.teamName}</h1>
+          <span className="bg-yellow-400 font-[poppins] text-black px-4 py-2 rounded-full">
             Current Attendance: {currAttd}
           </span>
         </div>
 
     
 
-        <motion.div id="team" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-black/40 rounded-2xl p-6 border border-yellow-500/20">
-          <h2 className="text-xl font-bold mb-4"><img src="./team.png" className="w-8 h-8 inline" alt="Team" /> Team Members</h2>
+        <motion.div id="team" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[url('./assets/Module-body-bg-transparent.png')] bg-[#e3ba82] bg-blend-overlay rounded-2xl p-6 border border-yellow-500/20 font-[poppins]">
+          <h2 className="text-xl text-[#34211A] font-semibold mb-4"><img src={member} className="w-16 inline" alt="Team" /> Team Members</h2>
           <div className="grid md:grid-cols-2 gap-4">
             <MemberCard member={team.lead} role="Lead" />
             {team.members.map((m, idx) => <MemberCard key={idx} member={m} />)}
@@ -111,24 +113,24 @@ function Teampanel() {
         </motion.div>
 
         {/* Attendance */}
-        <motion.div id="attendance" className="bg-black/40 rounded-2xl p-6 border border-yellow-500/20">
-          <h2 className="text-xl font-bold mb-4"><img src="./attd.png" className="w-8 h-8 inline" alt="Attendance" /> Attendance</h2>
+        <motion.div id="attendance" className="bg-[url('./assets/Module-body-bg-transparent.png')] bg-[#e3ba82] bg-blend-overlay rounded-2xl p-6 border border-yellow-500/20 font-[poppins]">
+          <h2 className="text-xl text-[#34211A] font-semibold mb-4"><img src={atte} className="w-16 inline" alt="Attendance" /> Attendance</h2>
           <AttendanceTable team={team} currAttd={currAttd} setOpen={setOpen} setNow={setNow} />
         </motion.div>
 
         {/* Problem Statement */}
-        <motion.div id="problem" className="bg-black/40 rounded-2xl p-6 border border-yellow-500/20">
-          <h2 className="text-xl font-bold mb-4">📜 Problem Statement</h2>
-          <p>{team.problem || "No problem statement assigned yet."}</p>
+        <motion.div id="problem" className="bg-[url('./assets/Module-body-bg-transparent.png')] bg-[#e3ba82] bg-blend-overlay rounded-2xl p-6 border border-yellow-500/20 font-[poppins]">
+          <h2 className="text-xl text-[#34211A] font-semibold mb-4"><img src={prob} className="w-16 inline" alt="Attendance" /> Problem Statement</h2>
+          <p className="text-[#34211A]">{team.problem || "No problem statement assigned yet."}</p>
         </motion.div>
 
         {/* Leaderboard */}
-        <motion.div id="leaderboard" className="bg-black/40 rounded-2xl p-6 border border-yellow-500/20">
-          <h2 className="text-xl font-bold mb-6">🏆 Leaderboard</h2>
+        <motion.div id="leaderboard" className="bg-[url('./assets/Module-body-bg-transparent.png')] bg-[#e3ba82] bg-blend-overlay text-[#34211A] rounded-2xl p-6 border border-yellow-500/20 font-[poppins]">
+          <h2 className="text-xl font-bold mb-6"><img src={lead} className="w-16 inline" alt="Attendance" /> Leaderboard</h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={leaderboard}>
-              <XAxis dataKey="teamName" />
-              <YAxis />
+              <XAxis dataKey="teamName" stroke="#34211A"/>
+              <YAxis stroke="#34211A"/>
               <Tooltip />
               <Bar dataKey="HuntScore" fill="#FFD700" />
             </BarChart>
@@ -144,13 +146,13 @@ function Teampanel() {
 
 function MemberCard({ member, role }) {
   return (
-    <div className="bg-gray-800 rounded-xl p-4 shadow-lg flex items-center gap-4">
+    <div className="bg-[#2E1807] rounded-xl p-4 shadow-lg flex items-center gap-4">
       <div className="w-12 h-12 rounded-full bg-yellow-400 text-black flex items-center justify-center font-bold">
         {member.name?.[0]}
       </div>
       <div>
-        <h3 className="font-bold">{member.name}</h3>
-        <p className="text-sm text-gray-300">{role || "Member"}</p>
+        <h3>{member.name}</h3>
+        <p className="text-sm text-gray-400">{role || "Member"}</p>
       </div>
     </div>
   );
@@ -160,7 +162,7 @@ function AttendanceTable({ team, currAttd, setOpen, setNow }) {
     const [attendances, setAttendances] = useState(["firstAttd", "secondAttd", "thirdAttd", "fourthAttd"]);
 
   return (
-    <table className="min-w-full divide-y divide-gray-700 text-sm">
+    <table className="min-w-full divide-y text-[#34211A] divide-gray-700 text-sm">
       <thead>
         <tr className="bg-yellow-400 text-black">
           <th className="px-4 py-2">Name</th>
@@ -179,7 +181,7 @@ function AttendanceTable({ team, currAttd, setOpen, setNow }) {
                : m[attendances[n-1]+"Img"] ? (<p>Pending...</p>)
                 : (currAttd === n
                   ? <button onClick={() => { setNow({ ...m, id: team._id, type: attendances[n-1]+"Img" }); setOpen(true); }} className="bg-green-600 px-2 py-1 rounded hover:bg-green-700">Open</button>
-                  : <span className="text-gray-400">Closed</span>)}
+                  : <span className="text-[#34211A]">Closed</span>)}
               </td>
             ))}
           </tr>
@@ -226,7 +228,7 @@ function LoginPage({ pass, setPass, check }) {
   return (
     <div className="w-full h-screen flex justify-center items-center bg-gradient-to-br from-[#0a0f2c] via-[#13233f] to-[#0a0f2c]">
       <div className="bg-[#1b2a49]/80 rounded-2xl p-8 shadow-lg">
-        <h1 className="text-3xl font-pirates text-yellow-400 mb-6">Crew Login</h1>
+        <h1 className="text-3xl text-yellow-400 mb-6">Crew Login</h1>
         <input type="text" value={pass} onChange={(e) => setPass(e.target.value)} placeholder="Enter password..."
           className="w-full p-3 mb-4 rounded bg-[#13233f] text-white border border-yellow-400/40" />
         <button onClick={check} className="w-full bg-yellow-400 text-black font-bold py-2 rounded-lg">Enter</button>
