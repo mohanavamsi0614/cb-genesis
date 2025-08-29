@@ -19,18 +19,17 @@ function Teampanel() {
   const [now, setNow] = useState({});
   const [currAttd, setCurrAttd] = useState(3);
   const [loading, setLoading] = useState(true);
-    // Group photo state
-  const [groupPhoto, setGroupPhoto] = useState("");
-  const groupWebcamRef = useRef(null);
-
-
 
   useEffect(() => {
     Promise.all([check(), getLeaderboard()]).finally(() => setLoading(false));
 
     socket.on("team", (team) => setTeam(team));
-    socket.on("currAttd", (num) => setCurrAttd(num));
+    socket.on("currAttd", (num) =>{
+      console.log(num)
+       setCurrAttd(num)
+  });
     socket.on("leaderboard", (data) => setLeaderboard(data));
+    socket.emit('getCurrAttd')
   }, []);
 
   const getLeaderboard = async () => {
