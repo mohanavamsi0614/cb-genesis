@@ -37,8 +37,12 @@ function Teampanel() {
     Promise.all([check(), getLeaderboard()]).finally(() => setLoading(false));
 
     socket.on("team", (team) => setTeam(team));
-    socket.on("currAttd", (num) => setCurrAttd(num));
+    socket.on("currAttd", (num) =>{
+      console.log(num)
+       setCurrAttd(num)
+  });
     socket.on("leaderboard", (data) => setLeaderboard(data));
+    socket.emit('getCurrAttd')
   }, []);
 
   const getLeaderboard = async () => {
