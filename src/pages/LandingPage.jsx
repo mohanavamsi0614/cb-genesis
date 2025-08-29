@@ -355,12 +355,17 @@ function LandingPage() {
                       </Link>
                     ) : (
                       <div className="flex flex-col items-center">
-                        <span className="text-2xl font-[poppins] sm:text-2xl   text-[#362f1c] mb-2">Registration opens at 1:00 PM</span>
-                        <span className="text-xl font-[poppins] sm:text-2xl text-white bg-[#0d1628]/60 px-6 py-2 rounded-full border border-[#FFD700]/30 shadow-md">Countdown: {formatCountdown(countdown)}</span>
+                        <Link to='/teampanel'>
+                          <button
+                            className="bg-blue-600 hover:bg-orange-500 cursor-pointer text-white font-semibold px-15 py-5 rounded-xl text-2xl shadow-md transition-all duration-200 ease-in-out hover:scale-105"
+                          >
+                            Go to Team Panel
+                          </button>
+                        </Link>
+
                       </div>
                     )}
                   </motion.div>
-                  <div className=" w-full flex justify-center"><p className=" border w-26 font-sans p-2 text-center font-bold">Only For IT</p></div>
                 </div>
                 
                 {/* Oda Image */}
