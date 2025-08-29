@@ -3,8 +3,8 @@
 
 /* One Piece Font */
 @font-face {
-  /* font-family: 'MyCustomFont';
-  src: url('/fonts/one-piece-font.ttf') format('truetype'); */
+  font-family: 'MyCustomFont';
+  src: url('/fonts/one-piece-font.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
