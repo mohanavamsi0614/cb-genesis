@@ -86,7 +86,7 @@ function Teampanel() {
 
   const getProblems = async () => {
     try {
-      const res = await axios.get(`http://localhost:3001/event/problems`);
+      const res = await axios.get(`https://cb-kare-server-1.onrender.com/event/problems`);
       setProblems(res.data);
     } catch (err) {
       console.error(err);
@@ -109,7 +109,7 @@ function Teampanel() {
   const confirmProblem = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:3001/event/problems/select/${team._id}/${selectedProblem._id}`
+        `https://cb-kare-server-1.onrender.com/event/problems/select/${team._id}/${selectedProblem._id}`
       );
       setTeam(res.data);
       setProblemModal(false);
@@ -186,7 +186,7 @@ function Teampanel() {
       // Fetch selected problem for the team
       if (team._id) {
         try {
-          const res = await axios.get(`http://localhost:3001/event/problems/team/${team._id}`);
+          const res = await axios.get(`https://cb-kare-server-1.onrender.com/event/problems/team/${team._id}`);
           if (res.data.problem) {
             setTeam((prev) => ({
               ...prev,
@@ -423,6 +423,8 @@ function Teampanel() {
 
 function MemberCard({ member = {}, role }) {
   if (!member?.name) return null; 
+  
+  const emailNumber = member.email?.split("@")[0] || "";
 
   return (
     <div className="bg-[#2E1807] rounded-xl p-4 shadow-lg flex items-center gap-4">
@@ -431,7 +433,7 @@ function MemberCard({ member = {}, role }) {
       </div>
       <div>
         <h3 className="font-semibold">{member.name}</h3>
-        <p className="text-sm text-gray-400">{role || "Member"} - {member.email}</p>
+        <p className="text-sm text-gray-400">{role || "Member"} - {emailNumber||member.email}</p>
       </div>
     </div>
   );
