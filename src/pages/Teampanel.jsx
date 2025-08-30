@@ -77,7 +77,7 @@ function Teampanel() {
       const res = await axios.get(`${api}/event/teams`);
       const data = res.data;
       setLeaderboard(
-        data.sort((a, b) => b.HuntScore - a.HuntScore).slice(0, 10)
+        data.sort((a, b) => b.HuntScore - a.HuntScore).slice(0, 23)
       );
     } catch (err) {
       console.error(err);
@@ -86,7 +86,7 @@ function Teampanel() {
 
   const getProblems = async () => {
     try {
-      const res = await axios.get(`https://cb-kare-server-1.onrender.com/event/problems`);
+      const res = await axios.get(`${api}/event/problems`);
       setProblems(res.data);
     } catch (err) {
       console.error(err);
@@ -109,7 +109,7 @@ function Teampanel() {
   const confirmProblem = async () => {
     try {
       const res = await axios.post(
-        `https://cb-kare-server-1.onrender.com/event/problems/select/${team._id}/${selectedProblem._id}`
+        `${api}/event/problems/select/${team._id}/${selectedProblem._id}`
       );
       setTeam(res.data);
       setProblemModal(false);
@@ -193,7 +193,7 @@ function Teampanel() {
       // Fetch selected problem for the team
       if (team._id) {
         try {
-          const res = await axios.get(`https://cb-kare-server-1.onrender.com/event/problems/team/${team._id}`);
+          const res = await axios.get(`${api}/event/problems/team/${team._id}`);
           if (res.data.problem) {
             setTeam((prev) => ({
               ...prev,
