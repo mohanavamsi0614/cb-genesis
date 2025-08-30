@@ -437,6 +437,8 @@ function Teampanel() {
 
 function MemberCard({ member = {}, role }) {
   if (!member?.name) return null; 
+  
+  const emailNumber = member.email?.split("@")[0] || "";
 
   return (
     <div className="bg-[#2E1807] rounded-xl p-4 shadow-lg flex items-center gap-4">
@@ -445,7 +447,7 @@ function MemberCard({ member = {}, role }) {
       </div>
       <div>
         <h3 className="font-semibold">{member.name}</h3>
-        <p className="text-sm text-gray-400">{role || "Member"} - {member.email}</p>
+        <p className="text-sm text-gray-400">{role || "Member"} - {emailNumber||member.email}</p>
       </div>
     </div>
   );
