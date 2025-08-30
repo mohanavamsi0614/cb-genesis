@@ -452,6 +452,8 @@ function AttendanceTable({ team, currAttd, setOpen, setNow, handlePreview }) {
     "secondAttd",
     "thirdAttd",
     "fourthAttd",
+    "fifthAttd",
+    "sixthAttd",
   ]);
 
   return (
@@ -459,7 +461,7 @@ function AttendanceTable({ team, currAttd, setOpen, setNow, handlePreview }) {
       <thead>
         <tr className="bg-yellow-400 border-1 text-black font-semibold">
           <th className="px-4 py-2">Name</th>
-          {[1, 2, 3, 4].map((n) => {
+          {[1, 2, 3, 4, 5, 6].map((n) => {
             let suffix;
             if (n === 1) suffix = "st";
             else if (n === 2) suffix = "nd";
@@ -479,7 +481,7 @@ function AttendanceTable({ team, currAttd, setOpen, setNow, handlePreview }) {
           (m, idx) => (
             <tr key={idx} className="bg-[#FFF7E6]/70">
               <td className="border px-4 py-2 font-medium">{m?.name || "N/A"}</td>
-              {[1, 2, 3, 4].map((n) => {
+              {[1, 2, 3, 4, 5, 6].map((n) => {
                 const statusKey = attendances[n - 1] + "Status";
                 const imgKey = attendances[n - 1] + "Img";
                 const imgUrl = m?.[imgKey];
