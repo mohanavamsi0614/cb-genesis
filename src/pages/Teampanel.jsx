@@ -303,22 +303,8 @@ function Teampanel() {
               <p className="text-gray-600">{team?.problem?.title?.description}</p>
             </div>
           ) : (
-            <div className="space-y-4">
-              {problems.map((p) => (
-                <div
-                  key={p._id}
-                  onClick={() => {
-                    if (!team.problem) {
-                      setSelectedProblem(p);
-                      setProblemModal(true);
-                    }
-                  }}
-                  className="p-4 bg-[#FFF7E6] rounded-xl shadow cursor-pointer border border-yellow-500 hover:bg-yellow-200 transition"
-                >
-                  <h3 className="font-bold text-[#1A1A1A]">{p.title}</h3>
-                  <p className="text-sm text-[#34211A]">{p.description}</p>
-                </div>
-              ))}
+            <div className="space-y-4 font-black text-2xl">
+              Loading...
             </div>
           )}
         </motion.div>
