@@ -19,7 +19,7 @@ import lead from "../assets/leader.png";
 import upd from "../assets/problem.png"
 import NoNotification from '../assets/notificationzero.webp'
 import toast from "react-hot-toast";
-import { CheckCircle, XCircle, LogOut, Loader2 } from "lucide-react";
+import { CheckCircle, XCircle, LogOut, Loader2, Eye} from "lucide-react";
 
 const socket = io(api);
 
@@ -140,6 +140,13 @@ function Teampanel() {
     }
   };
 
+  // Move handlePreview function before it's used
+  const handlePreview = (url) => {
+    if (url) {
+      window.open(url, "_blank");
+    }
+  };
+
   const NotificationBell = () => (
     <div
       className={`fixed bottom-4 right-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black 
@@ -204,7 +211,6 @@ function Teampanel() {
 
   if (loading) return <LoadingPage />;
   if (!auth) return <LoginPage pass={pass} setPass={setPass} check={check} />;
-
 
   return (
     <div className="bg-gradient-to-br text-amber-50">
@@ -273,7 +279,7 @@ function Teampanel() {
         {/* Attendance */}
         <motion.div
           id="attendance"
-          className="bg-[#e3ba82] rounded-2xl p-6 border-2 border-yellow-500 font-[poppins]"
+          className="bg-[#e3ba82] overflow-auto rounded-2xl p-6 border-2 border-yellow-500 font-[poppins]"
         >
           <h2 className="text-xl text-[#34211A] font-bold mb-4 flex items-center gap-2">
             <img src={atte} className="w-14" alt="Attendance" /> Attendance
@@ -283,6 +289,7 @@ function Teampanel() {
             currAttd={currAttd}
             setOpen={setOpen}
             setNow={setNow}
+            handlePreview={handlePreview}
           />
         </motion.div>
 
@@ -315,7 +322,7 @@ function Teampanel() {
           className="bg-[#e3ba82] text-[#34211A] rounded-2xl p-6 border-2 border-yellow-500 font-[poppins]"
         >
           <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-            <img src={lead} className="w-14" alt="Leaderboard" /> Leaderboard
+            <img src={lead} className="w-14" alt="Leaderboard" /> Game Leaderboard
           </h2>
           <ResponsiveContainer width="100%" height={300}>
               <BarChart data={leaderboard}>
@@ -353,7 +360,7 @@ function Teampanel() {
           id="event-updates"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="bg-[#e3ba82] bg-blend-overlay rounded-2xl p-6 border border-yellow-500/20 font-[poppins]"
+          className="bg-[#e3ba82] rounded-2xl p-6 border border-yellow-500/20 font-[poppins] scroll-auto"
         >
               <h2 className="text-xl text-[#34211A] font-semibold mb-4">
               <img src={upd} className="w-16 inline" alt="Event Updates" />{" "}
@@ -364,7 +371,7 @@ function Teampanel() {
                   </span>
                 )}
               </h2>
-            <div className="h-full md:h-64 overflow-y-auto rounded-lg p-4 bg-black/10 text-[#1A1A1A] flex items-center justify-center">
+            <div className="h-full md:h-full rounded-lg p-4 bg-black/10 text-[#1A1A1A] flex items-center justify-center">
             {EventUp && EventUp.trim() ? (
               <div dangerouslySetInnerHTML={{ __html: EventUp }} className="w-full" />
             ) : (
@@ -439,7 +446,7 @@ function MemberCard({ member = {}, role }) {
   );
 }
 
-function AttendanceTable({ team, currAttd, setOpen, setNow }) {
+function AttendanceTable({ team, currAttd, setOpen, setNow, handlePreview }) {
   const [attendances] = useState([
     "firstAttd",
     "secondAttd",
@@ -469,41 +476,64 @@ function AttendanceTable({ team, currAttd, setOpen, setNow }) {
       </thead>
       <tbody>
         {[team.lead, ...(Array.isArray(team.members) ? team.members : [])].map(
-        (m, idx) => (
-          <tr key={idx} className="bg-[#FFF7E6]/70">
-            <td className="border px-4 py-2 font-medium">{m?.name || "N/A"}</td>
-            {[1, 2, 3, 4].map((n) => (
-              <td key={n} className="border px-4 py-2 text-center">
-                {m?.[attendances[n - 1] + "Status"] ? (
-  m[attendances[n - 1] + "Status"] === "present" ? (
-    <CheckCircle className="text-green-600 mx-auto" size={22} />
-  ) : (
-    <XCircle className="text-red-500 mx-auto" size={22} />
-  )
-                ) : m?.[attendances[n - 1] + "Img"] ? (
-                  <p className="text-yellow-600 font-semibold">Pending...</p>
-                ) : currAttd === n ? (
-                  <button
-                    onClick={() => {
-                      setNow({
-                        ...m,
-                        id: team._id,
-                        type: attendances[n - 1] + "Img",
-                      });
-                      setOpen(true);
-                    }}
-                    className="bg-[#E63946] px-3 py-1 rounded-lg text-white font-semibold hover:bg-[#C53030] transition"
-                  >
-                    Open
-                  </button>
-                ) : (
-                  <span className="text-gray-600">Closed</span>
-                )}
-              </td>
-            ))}
-          </tr>
-        )
-      )}
+          (m, idx) => (
+            <tr key={idx} className="bg-[#FFF7E6]/70">
+              <td className="border px-4 py-2 font-medium">{m?.name || "N/A"}</td>
+              {[1, 2, 3, 4].map((n) => {
+                const statusKey = attendances[n - 1] + "Status";
+                const imgKey = attendances[n - 1] + "Img";
+                const imgUrl = m?.[imgKey];
+
+                return (
+                  <td key={n} className="border px-4 py-2 text-center">
+                    {m?.[statusKey] ? (
+                      m[statusKey] === "present" ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <CheckCircle className="text-green-600" size={22} />
+                          {imgUrl && (
+                            <Eye
+                              className="text-blue-600 cursor-pointer hover:text-blue-800"
+                              size={20}
+                              onClick={() => handlePreview(imgUrl)}
+                            />
+                          )}
+                        </div>
+                      ) : (
+                        <XCircle className="text-red-500 mx-auto" size={22} />
+                        
+                      )
+                    ) : imgUrl ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <p className="text-yellow-600 font-semibold ">Pending...</p>
+                        <Eye
+                              className="text-green-600 cursor-pointer hover:text-green-800"
+                              size={20}
+                              onClick={() => handlePreview(imgUrl)}
+                        />
+                      </div>
+                    ) : currAttd === n ? (
+                      <button
+                        onClick={() => {
+                          setNow({
+                            ...m,
+                            id: team._id,
+                            type: attendances[n - 1] + "Img",
+                          });
+                          setOpen(true);
+                        }}
+                        className="bg-[#E63946] px-3 py-1 rounded-lg text-white font-semibold hover:bg-[#C53030] transition"
+                      >
+                        Open
+                      </button>
+                    ) : (
+                      <span className="text-gray-600">Closed</span>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          )
+        )}
       </tbody>
     </table>
   );
